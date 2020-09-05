@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 import moment from "moment";
 import { useRouter } from "next/router";
-
+import { notification } from 'antd';
 //api here is an axios instance
 import api from "../api";
 
@@ -19,20 +19,34 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
-    const {
-      data: {
-        data: { token, user },
-      },
-    } = await api.post("/auth/signin", { email, password });
-    if (token) {
-      console.log("Got token");
-      Cookies.set("token", token, { expires: 60 });
-      api.defaults.headers.Authorization = `${token.token}`;
-      setUser(user);
-      console.log("Got user", user);
-      return true;
+    try {
+      const {
+        data: {
+          data: { token, user },
+        },
+      } = await api.post("/auth/signin", { email, password });
+      
+      if (token) {
+        console.log("Got token");
+        Cookies.set("token", token, { expires: 60 });
+        api.defaults.headers.Authorization = `${token.token}`;
+        setUser(user);
+        console.log("Got user", user);
+        return true;
+      }
+      return false;
+      
+    } catch (error) {
+      /* console.log(error?.response?.data?.message);  */
+      notification.warning({
+        message: `Error !!!`,
+        description:
+          'Verifique los datos ingresados',
+        placement:'topRight',
+        style:{ width: 300}
+      });
+      return false;
     }
-    return false;
   };
 
   const logout = () => {
