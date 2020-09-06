@@ -1,5 +1,4 @@
-import FormLogin from './FormLogin';
+import FormLogin from "./FormLogin";
+import FormCustomer from "./FormCustomer";
 
-export {
-    FormLogin
-}
+export { FormLogin, FormCustomer };

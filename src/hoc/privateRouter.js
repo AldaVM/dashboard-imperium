@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import Cookies from "js-cookie";
 
 export function ProtectRoute(Component) {
-  return () => {
+  return (props) => {
     const { isAuthenticated, logout, loadUserFromCookies } = useAuth();
     useEffect(() => {
       const token = Cookies.get("token");
@@ -15,6 +15,6 @@ export function ProtectRoute(Component) {
       }
     }, []);
 
-    return <Component {...arguments} />;
+    return <Component {...props} />;
   };
 }
