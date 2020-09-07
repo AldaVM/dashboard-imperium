@@ -1,18 +1,22 @@
 import React from "react";
+import { ClientProvider } from "../src/providers";
 import { LayoutAdmin } from "../src/layouts";
 import { ProtectRoute } from "../src/hoc/privateRouter";
-import { Typography } from "antd";
 import ClientsWrapper from "../src/components/Clients";
 
-const { Title } = Typography;
-
-function Client({ clients }) {
+function Client({ clients, countClients }) {
   return (
     <>
-      <LayoutAdmin>
-        <Title>Clientes</Title>
-        <ClientsWrapper clients={clients} />
-      </LayoutAdmin>
+      <ClientProvider
+        initialValues={{
+          clients,
+          countClients,
+        }}
+      >
+        <LayoutAdmin>
+          <ClientsWrapper />
+        </LayoutAdmin>
+      </ClientProvider>
     </>
   );
 }
@@ -30,6 +34,7 @@ export async function getStaticProps() {
               return clients;
             }, [])
           : [],
+      countClients: json?.data.count,
     },
   };
 }

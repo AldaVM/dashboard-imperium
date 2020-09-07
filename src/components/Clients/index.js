@@ -1,12 +1,17 @@
 import TableClients from "./TableClients";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import fetchData from "../../helpers/fetchData";
 import { URL_API } from "../../constants";
-import { Spin } from "antd";
+import { Spin, Typography, Modal, Form } from "antd";
 import ActionsClient from "./ActionsClient";
+import { ClientContext } from "../../context";
 
-export default function ClientsWrapper({ clients }) {
+const { Title } = Typography;
+
+export default function ClientsWrapper() {
+  const { clients, updateClients, countClients } = useContext(ClientContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [clientsActions, setClientsActions] = useState(clients);
 
   async function deleteClient(client) {
     const { _id, timetable } = client;
@@ -14,10 +19,9 @@ export default function ClientsWrapper({ clients }) {
     let timetableClient = null;
     setIsLoading(true);
 
-    const customer = fetchData(`${URL_API}/customer/${_id}`, {
+    const deleteClients = fetchData(`${URL_API}/customer/${_id}`, {
       method: "DELETE",
       mode: "cors",
-      "Content-Type": "application/json",
     });
 
     if (timetable) {
@@ -36,13 +40,10 @@ export default function ClientsWrapper({ clients }) {
         }
       );
     }
-
     try {
-      await Promise.all([timetableClient, customer]).then((values) => {
+      await Promise.all([timetableClient, deleteClients]).then(() => {
         setIsLoading(false);
-        setTimeout(function () {
-          return window.location.reload(false);
-        }, 2000);
+        updateClients();
       });
     } catch (error) {
       console.log(error);
@@ -50,16 +51,25 @@ export default function ClientsWrapper({ clients }) {
     }
   }
 
-  const clientsActions = clients.reduce((accumulator, currentValue) => {
-    accumulator.push({
-      ...currentValue,
-      delete: deleteClient,
-    });
-    return accumulator;
-  }, []);
+  useEffect(() => {
+    setClientsActions(
+      clients.reduce((accumulator, currentValue) => {
+        accumulator.push({
+          ...currentValue,
+          key: currentValue._id,
+          delete: deleteClient,
+        });
+        return accumulator;
+      }, [])
+    );
+  }, [clients]);
 
   return (
     <>
+      <Title>Clientes</Title>
+      <Title level={5}>
+        Clientes registrados: {countClients ? countClients : 0}
+      </Title>
       <ActionsClient />
       <div className="container">
         <style jsx>{`
