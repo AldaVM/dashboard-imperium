@@ -36,6 +36,7 @@ export default function ActionsClient() {
         visible={isVisible}
         onCancel={handleCancel}
         onOk={handleOk}
+        footer={null}
       >
         <FormCustomer />
       </Modal>

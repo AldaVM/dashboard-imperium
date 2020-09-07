@@ -1,4 +1,4 @@
-import { Form, Input, Button, Spin } from "antd";
+import { Form, Input, Button, Spin, notification } from "antd";
 import fetchData from "../../../helpers/fetchData";
 import { URL_API } from "../../../constants";
 import { useState, useContext } from "react";
@@ -39,11 +39,21 @@ export default function FormCustomer() {
         body: JSON.stringify(values),
       });
       setIsLoading(false);
-      setMessage(response.message);
-      updateClients();
+      if (response.status === 200 || response.status === 201) {
+        notification.success({
+          message: `Cliente registrado!`,
+          placement: "topRight",
+          style: { width: 300 },
+        });
+        updateClients();
+      }
     } catch (error) {
       setIsLoading(false);
-      setMessage("Oppps algo anda mal");
+      notification.error({
+        message: `Algo anda mal!`,
+        placement: "topRight",
+        style: { width: 300 },
+      });
       console.log(error);
     }
   };

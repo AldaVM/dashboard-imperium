@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 import moment from "moment";
 import { useRouter } from "next/router";
-import { notification } from 'antd';
+import { notification } from "antd";
 //api here is an axios instance
 import api from "../api";
 
@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
           data: { token, user },
         },
       } = await api.post("/auth/signin", { email, password });
-      
+
       if (token) {
         console.log("Got token");
         Cookies.set("token", token, { expires: 60 });
@@ -35,15 +35,13 @@ export const AuthProvider = ({ children }) => {
         return true;
       }
       return false;
-      
     } catch (error) {
       /* console.log(error?.response?.data?.message);  */
       notification.warning({
         message: `Error !!!`,
-        description:
-          'Verifique los datos ingresados',
-        placement:'topRight',
-        style:{ width: 300}
+        description: "Verifique los datos ingresados",
+        placement: "topRight",
+        style: { width: 300 },
       });
       return false;
     }
@@ -55,16 +53,13 @@ export const AuthProvider = ({ children }) => {
     router.push("/");
   };
 
-
- const loadUserFromCookies=async()=> {
+  const loadUserFromCookies = async () => {
     const token = Cookies.get("token");
     if (token) {
       try {
         const { exp, user } = jwt_decode(token);
         console.log(exp, user);
-        exp <= moment().unix()
-          ? console.log("Token expirado")
-          : setUser(user);
+        exp <= moment().unix() ? console.log("Token expirado") : setUser(user);
       } catch (error) {
         console.log(error.message);
         logout();
@@ -72,18 +67,17 @@ export const AuthProvider = ({ children }) => {
     } else {
       setUser(null);
     }
-  }
-
-
-
-
-
-
-
+  };
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated: !!user, user, login, logout,loadUserFromCookies }}
+      value={{
+        isAuthenticated: !!user,
+        user,
+        login,
+        logout,
+        loadUserFromCookies,
+      }}
     >
       {children}
     </AuthContext.Provider>

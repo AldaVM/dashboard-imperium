@@ -2,7 +2,7 @@ import TableClients from "./TableClients";
 import { useState, useContext, useEffect } from "react";
 import fetchData from "../../helpers/fetchData";
 import { URL_API } from "../../constants";
-import { Spin, Typography, Modal, Form } from "antd";
+import { Spin, Typography, notification } from "antd";
 import ActionsClient from "./ActionsClient";
 import { ClientContext } from "../../context";
 
@@ -44,10 +44,20 @@ export default function ClientsWrapper() {
       await Promise.all([timetableClient, deleteClients]).then(() => {
         setIsLoading(false);
         updateClients();
+        notification.success({
+          message: `Registro Eliminado!`,
+          placement: "topRight",
+          style: { width: 300 },
+        });
       });
     } catch (error) {
       console.log(error);
       setIsLoading(false);
+      notification.error({
+        message: `Algo anda mal`,
+        placement: "topRight",
+        style: { width: 300 },
+      });
     }
   }
 

@@ -1,4 +1,4 @@
-import { Table, Space, Button, Form, Modal } from "antd";
+import { Table, Space, Button, Modal } from "antd";
 import { ListItemTable } from "./Styled";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useState } from "react";
@@ -7,10 +7,8 @@ import { FormUpdateCustomer } from "../../Form";
 export default function TableClients({ clients }) {
   const [isVisible, setIsVisible] = useState(false);
   const [client, setClient] = useState({});
-  const [form] = Form.useForm();
 
   function showModal() {
-    form.resetFields();
     setIsVisible(!isVisible);
   }
 
@@ -24,7 +22,7 @@ export default function TableClients({ clients }) {
 
   function editClient(currentClient) {
     showModal();
-    console.log(currentClient);
+    setClient(currentClient);
   }
 
   const columns = [
@@ -79,7 +77,6 @@ export default function TableClients({ clients }) {
             icon={<EditOutlined />}
             onClick={() => {
               editClient(client);
-              setClient(client);
             }}
           >
             Modificar
@@ -104,8 +101,9 @@ export default function TableClients({ clients }) {
         visible={isVisible}
         onCancel={handleCancel}
         onOk={handleOk}
+        footer={null}
       >
-        <FormUpdateCustomer initialValues={client} form={form} />
+        <FormUpdateCustomer initialValues={client} />
       </Modal>
       <Table columns={columns} dataSource={clients} />
     </>

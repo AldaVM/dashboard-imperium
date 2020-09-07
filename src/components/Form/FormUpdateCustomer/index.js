@@ -1,8 +1,9 @@
-import { Form, Input, Button, Spin, DatePicker, Select } from "antd";
+import { Form, Input, Button, Spin, Select } from "antd";
 import fetchData from "../../../helpers/fetchData";
 import { URL_API } from "../../../constants";
 import { useState, useContext, useEffect } from "react";
 import { ClientContext } from "../../../context";
+import { notification } from "antd";
 
 const layout = {
   labelCol: {
@@ -20,47 +21,64 @@ const tailLayout = {
   },
 };
 
-export default function FormUpdateCustomer({ initialValues, form }) {
+export default function FormUpdateCustomer({ initialValues }) {
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState("");
-
+  const [form] = Form.useForm();
   const { updateClients } = useContext(ClientContext);
+
+  useEffect(() => {
+    form.resetFields();
+    form.setFieldsValue({
+      ...initialValues,
+    });
+  }, [initialValues]);
 
   const onFinish = async (values) => {
     try {
-      console.log(values);
-      // setIsLoading(true);
-      // const response = await fetchData(`${URL_API}/customer/`, {
-      //   method: "POST",
-      //   mode: "cors",
-      //   headers: {
-      //     Accept: "application/json",
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(values),
-      // });
-      // setIsLoading(false);
-      // setMessage(response.message);
-      // updateClients();
+      setIsLoading(true);
+      const parseValues = Object.keys(values).reduce(
+        (validateValue, currentValue) => {
+          if (values[currentValue] && currentValue !== "_id") {
+            validateValue[currentValue] = values[currentValue];
+          }
+          return validateValue;
+        },
+        {}
+      );
+      const response = await fetchData(`${URL_API}/customer/${values._id}`, {
+        method: "PUT",
+        mode: "cors",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(parseValues),
+      });
+      setIsLoading(false);
+      notification.success({
+        message: `Registro actualizado!`,
+        placement: "topRight",
+        style: { width: 300 },
+      });
+      updateClients();
     } catch (error) {
       setIsLoading(false);
-      setMessage("Oppps algo anda mal");
-      console.log(error);
+      notification.error({
+        message: `Algo anda mal!`,
+        placement: "topRight",
+        style: { width: 300 },
+      });
     }
   };
 
   return (
     <>
-      <pre>{JSON.stringify(initialValues)}</pre>
       <Form
         form={form}
         {...layout}
         name="form_update_client"
         onFinish={onFinish}
         autoComplete="off"
-        initialValues={{
-          ...initialValues,
-        }}
       >
         <Form.Item
           label="Nombres"
@@ -122,15 +140,26 @@ export default function FormUpdateCustomer({ initialValues, form }) {
             <Select.Option value="other">Otro</Select.Option>
           </Select>
         </Form.Item>
+        <Form.Item
+          name="_id"
+          rules={[
+            {
+              required: true,
+              message: "Este campo es requerido",
+            },
+          ]}
+          hidden
+        >
+          <Input placeholder="" hidden />
+        </Form.Item>
 
         <Form.Item {...tailLayout}>
           <Button type="primary" htmlType="submit">
-            Crear
+            Actualizar
           </Button>
         </Form.Item>
       </Form>
       {isLoading && <Spin />}
-      {message && <span>{message}</span>}
     </>
   );
 }
