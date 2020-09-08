@@ -1,24 +1,18 @@
 import { Form, Input, Button, Spin, Select } from "antd";
-import fetchData from "../../../helpers/fetchData";
-import { URL_API } from "../../../constants";
 import { useState, useContext, useEffect } from "react";
 import { ClientContext } from "../../../context";
-import { notification } from "antd";
+import serviceFetch from "../../../helpers/closureFetch";
+import validateResponse from "../../../helpers/validationsReponse";
+import { layoutForm, tailLayoutForm } from "../complements";
 
-const layout = {
-  labelCol: {
-    span: 8,
-  },
-  wrapperCol: {
-    span: 16,
-  },
-};
+const cleanRequestValues = (values) => {
+  return Object.keys(values).reduce((parseValues, value) => {
+    if (values[value] && value !== "_id") {
+      parseValues[value] = values[value];
+    }
 
-const tailLayout = {
-  wrapperCol: {
-    offset: 8,
-    span: 16,
-  },
+    return parseValues;
+  }, {});
 };
 
 export default function FormUpdateCustomer({ initialValues }) {
@@ -36,38 +30,17 @@ export default function FormUpdateCustomer({ initialValues }) {
   const onFinish = async (values) => {
     try {
       setIsLoading(true);
-      const parseValues = Object.keys(values).reduce(
-        (validateValue, currentValue) => {
-          if (values[currentValue] && currentValue !== "_id") {
-            validateValue[currentValue] = values[currentValue];
-          }
-          return validateValue;
-        },
-        {}
-      );
-      const response = await fetchData(`${URL_API}/customer/${values._id}`, {
-        method: "PUT",
-        mode: "cors",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(parseValues),
-      });
+
+      const parseValues = cleanRequestValues(values);
+      const { update } = serviceFetch(`customer/${values._id}`);
+      const response = await update(parseValues);
       setIsLoading(false);
-      notification.success({
-        message: `Registro actualizado!`,
-        placement: "topRight",
-        style: { width: 300 },
-      });
+
+      validateResponse(response.status, "Update Client");
       updateClients();
     } catch (error) {
       setIsLoading(false);
-      notification.error({
-        message: `Algo anda mal!`,
-        placement: "topRight",
-        style: { width: 300 },
-      });
+      validateResponse(error.status, "Client");
     }
   };
 
@@ -75,7 +48,7 @@ export default function FormUpdateCustomer({ initialValues }) {
     <>
       <Form
         form={form}
-        {...layout}
+        {...layoutForm}
         name="form_update_client"
         onFinish={onFinish}
         autoComplete="off"
@@ -153,7 +126,7 @@ export default function FormUpdateCustomer({ initialValues }) {
           <Input placeholder="" hidden />
         </Form.Item>
 
-        <Form.Item {...tailLayout}>
+        <Form.Item {...tailLayoutForm}>
           <Button type="primary" htmlType="submit">
             Actualizar
           </Button>

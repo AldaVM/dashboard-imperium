@@ -1,24 +1,9 @@
-import { Form, Input, Button, Spin, notification } from "antd";
-import serviceFetch from "../../../helpers/closureFetch";
+import { Form, Input, Button, Spin } from "antd";
 import { useState, useContext } from "react";
 import { ClientContext } from "../../../context";
 import validateResponse from "../../../helpers/validationsReponse";
-
-const layout = {
-  labelCol: {
-    span: 8,
-  },
-  wrapperCol: {
-    span: 16,
-  },
-};
-
-const tailLayout = {
-  wrapperCol: {
-    offset: 8,
-    span: 16,
-  },
-};
+import serviceFetch from "../../../helpers/closureFetch";
+import { layoutForm, tailLayoutForm } from "../complements";
 
 export default function FormCustomer() {
   const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +27,7 @@ export default function FormCustomer() {
   return (
     <>
       <Form
-        {...layout}
+        {...layoutForm}
         name="form_client"
         initialValues={{
           remember: true,
@@ -86,7 +71,7 @@ export default function FormCustomer() {
         >
           <Input placeholder="Ingresa el dni del cliente" />
         </Form.Item>
-        <Form.Item {...tailLayout}>
+        <Form.Item {...tailLayoutForm}>
           <Button type="primary" htmlType="submit">
             Crear
           </Button>

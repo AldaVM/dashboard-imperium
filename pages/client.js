@@ -2,7 +2,7 @@ import React from "react";
 import { ClientProvider } from "../src/providers";
 import { LayoutAdmin } from "../src/layouts";
 import { ProtectRoute } from "../src/hoc/privateRouter";
-import ClientsWrapper from "../src/components/Clients";
+import ClientsWrapper from "../src/components/Clients/ClientsWrapper";
 
 function Client({ clients, countClients }) {
   return (

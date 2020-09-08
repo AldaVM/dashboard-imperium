@@ -73,6 +73,25 @@ const serviceFetch = (url) => (service) => {
         };
       }
     },
+    deleteData: async (
+      config = {
+        token: "anyToken",
+      }
+    ) => {
+      try {
+        const response = await fetch(URL, {
+          method: "DELETE",
+          mode: "cors",
+          ...config,
+        });
+        return await response.json();
+      } catch (error) {
+        return {
+          status: 500,
+          error,
+        };
+      }
+    },
   };
 };
 

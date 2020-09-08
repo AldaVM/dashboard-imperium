@@ -69,7 +69,7 @@ export default function TableClients({ clients }) {
       ),
     },
     {
-      title: "Action",
+      title: "Actions",
       key: "action",
       render: (client) => (
         <Space size="middle">

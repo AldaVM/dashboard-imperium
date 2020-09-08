@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ClientContext } from "../context";
-import fetchData from "../helpers/fetchData";
-import { URL_API } from "../constants";
+import serviceFetch from "../helpers/closureFetch";
+import validateResponse from "../helpers/validationsReponse";
 
 export default function ClientProvider({ children, initialValues }) {
   const [clients, setClients] = useState(initialValues.clients);
@@ -9,19 +9,15 @@ export default function ClientProvider({ children, initialValues }) {
 
   async function updateClients() {
     try {
-      const response = await fetchData(`${URL_API}/customer`, {
-        method: "GET",
-        mode: "cors",
-      });
+      const { get } = serviceFetch("customer");
+      const response = await get();
 
-      if (response.status === 200 || response.status === 201) {
-        console.log(response);
-        setClients(response.data.records);
-        setCountClients(response.data.count ? response.data.count : 0);
-      }
+      validateResponse(response.status, "List Clients");
+      setClients(response.data.records);
+      setCountClients(response.data.count ? response.data.count : 0);
     } catch (error) {
       setClients([]);
-      console.log(error);
+      setCountClients(0);
     }
   }
 
