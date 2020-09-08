@@ -1,8 +1,8 @@
 import { Form, Input, Button, Spin, notification } from "antd";
-import fetchData from "../../../helpers/fetchData";
-import { URL_API } from "../../../constants";
+import serviceFetch from "../../../helpers/closureFetch";
 import { useState, useContext } from "react";
 import { ClientContext } from "../../../context";
+import validateResponse from "../../../helpers/validationsReponse";
 
 const layout = {
   labelCol: {
@@ -22,39 +22,20 @@ const tailLayout = {
 
 export default function FormCustomer() {
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState("");
   const { updateClients } = useContext(ClientContext);
 
   const onFinish = async (values) => {
     try {
-      console.log(values);
       setIsLoading(true);
-      const response = await fetchData(`${URL_API}/customer/`, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
+      const { create } = serviceFetch("customer");
+      const response = await create(values);
       setIsLoading(false);
-      if (response.status === 200 || response.status === 201) {
-        notification.success({
-          message: `Cliente registrado!`,
-          placement: "topRight",
-          style: { width: 300 },
-        });
-        updateClients();
-      }
+
+      validateResponse(response.status, "client");
+      updateClients();
     } catch (error) {
       setIsLoading(false);
-      notification.error({
-        message: `Algo anda mal!`,
-        placement: "topRight",
-        style: { width: 300 },
-      });
-      console.log(error);
+      validateResponse(error.status, "client");
     }
   };
 
@@ -112,7 +93,6 @@ export default function FormCustomer() {
         </Form.Item>
       </Form>
       {isLoading && <Spin />}
-      {message && <span>{message}</span>}
     </>
   );
 }
