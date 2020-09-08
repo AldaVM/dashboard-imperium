@@ -1,4 +1,3 @@
-import styed from "@emotion/styled";
 import styled from "@emotion/styled";
 
 export const ListItemTable = styled("ul")`

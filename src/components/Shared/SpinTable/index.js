@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const ContainerClients = styled("div")`
+export const ContainerSpin = styled("div")`
   position: relative;
   background: rgba(0, 0, 0, 0.05);
   margin-top: 2em;

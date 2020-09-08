@@ -6,7 +6,7 @@ import allFetch from "../../../helpers/allFetch";
 import validateResponse from "../../../helpers/validationsReponse";
 import ActionsClient from "../ActionsClient";
 import TableClients from "../TableClients";
-import { ContainerClients, WrapperSpin } from "./Styled";
+import { ContainerSpin, WrapperSpin } from "../../Shared/SpinTable";
 
 const { Title } = Typography;
 
@@ -71,13 +71,13 @@ export default function ClientsWrapper() {
         Clientes registrados: {countClients ? countClients : 0}
       </Title>
       <ActionsClient />
-      <ContainerClients>
+      <ContainerSpin>
         {isLoading && (
           <WrapperSpin>
             <Spin size="large" />
           </WrapperSpin>
         )}
-      </ContainerClients>
+      </ContainerSpin>
       <TableClients clients={clientsActions} />
     </>
   );
