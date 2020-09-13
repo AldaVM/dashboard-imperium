@@ -2,6 +2,7 @@ import { Button, Modal, Space } from "antd";
 import { useState } from "react";
 import { PlusCircleOutlined, BarChartOutlined } from "@ant-design/icons";
 import FormShift from "../../Form/FormShift";
+import { ContainerActions } from "./Styled";
 
 export default function ActionsShift() {
   const [isVisible, setIsVisible] = useState(false);
@@ -19,7 +20,7 @@ export default function ActionsShift() {
   }
 
   return (
-    <div>
+    <ContainerActions>
       <Space>
         <Button
           type="primary"
@@ -28,9 +29,8 @@ export default function ActionsShift() {
         >
           Crear Turno
         </Button>
-        <Button icon={<BarChartOutlined />}>Export Excel</Button>
+        <Button icon={<BarChartOutlined />}>Export Excelll</Button>
       </Space>
-
       <Modal
         title="Nuevo Turno"
         visible={isVisible}
@@ -40,6 +40,6 @@ export default function ActionsShift() {
       >
         <FormShift typeAction="create" />
       </Modal>
-    </div>
+    </ContainerActions>
   );
 }

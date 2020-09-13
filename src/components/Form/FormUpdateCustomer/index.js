@@ -1,6 +1,6 @@
 import { Form, Input, Button, Spin, Select } from "antd";
 import { useState, useContext, useEffect } from "react";
-import { ClientContext } from "../../../context";
+
 import serviceFetch from "../../../helpers/closureFetch";
 import validateResponse from "../../../helpers/validationsReponse";
 import { layoutForm, tailLayoutForm } from "../complements";
@@ -15,10 +15,9 @@ const cleanRequestValues = (values) => {
   }, {});
 };
 
-export default function FormUpdateCustomer({ initialValues }) {
+export default function FormUpdateCustomer({ initialValues, updatedValues }) {
   const [isLoading, setIsLoading] = useState(false);
   const [form] = Form.useForm();
-  const { updateClients } = useContext(ClientContext);
 
   useEffect(() => {
     form.resetFields();
@@ -35,10 +34,10 @@ export default function FormUpdateCustomer({ initialValues }) {
       const { update } = serviceFetch(`customer/${values._id}`);
       const response = await update(parseValues);
       setIsLoading(false);
-
       validateResponse(response.status, "Update Client");
-      updateClients();
+      updatedValues();
     } catch (error) {
+      console.log(error);
       setIsLoading(false);
       validateResponse(error.status, "Client");
     }

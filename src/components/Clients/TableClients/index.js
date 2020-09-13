@@ -1,12 +1,14 @@
 import { Table, Space, Button, Modal } from "antd";
 import { ListItemTable } from "./Styled";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { ClientContext } from "../../../context";
+import { useState, useContext } from "react";
 import { FormUpdateCustomer } from "../../Form";
 
 export default function TableClients({ clients }) {
   const [isVisible, setIsVisible] = useState(false);
   const [client, setClient] = useState({});
+  const { updateClients } = useContext(ClientContext);
 
   function showModal() {
     setIsVisible(!isVisible);
@@ -52,9 +54,34 @@ export default function TableClients({ clients }) {
       key: "gender",
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
+      title: "Creado el",
+      dataIndex: "create_at",
+      key: "create_at",
+      render: (create_at) => {
+        const dateCreate = new Date(create_at);
+        const day = dateCreate.getDate();
+        const month = dateCreate.getMonth();
+        const year = dateCreate.getFullYear();
+
+        return <span>{`${day}/${month + 1}/${year}`}</span>;
+      },
+    },
+    {
+      title: "Inscrito en Turno",
+      dataIndex: "date_timetable",
+      key: "date_timetable",
+      render: (date_timetable) => {
+        const dateCreate = new Date(date_timetable);
+        const day = dateCreate.getDate();
+        const month = dateCreate.getMonth();
+        const year = dateCreate.getFullYear();
+
+        return (
+          <span>
+            {date_timetable ? `${day}/${month + 1}/${year}` : "00/00/0000"}
+          </span>
+        );
+      },
     },
     {
       title: "Turno",
@@ -103,7 +130,10 @@ export default function TableClients({ clients }) {
         onOk={handleOk}
         footer={null}
       >
-        <FormUpdateCustomer initialValues={client} />
+        <FormUpdateCustomer
+          initialValues={client}
+          updatedValues={updateClients}
+        />
       </Modal>
       <Table columns={columns} dataSource={clients} />
     </>

@@ -2,6 +2,7 @@ import { Table, Space, Button, Modal } from "antd";
 import { InfoCircleOutlined, EditOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import FormShift from "../../Form/FormShift";
+import Link from "next/link";
 
 export default function TableShifts({ shifts }) {
   const [isVisible, setIsVisible] = useState(false);
@@ -87,14 +88,16 @@ export default function TableShifts({ shifts }) {
           >
             Modificar
           </Button>
-          <Button
-            type="primary"
-            danger
-            onClick={() => console.log(shift)}
-            icon={<InfoCircleOutlined />}
-          >
-            Detail
-          </Button>
+          <Link href={`/timetable/${shift._id}`}>
+            <Button
+              type="primary"
+              danger
+              onClick={() => console.log(shift)}
+              icon={<InfoCircleOutlined />}
+            >
+              Detail
+            </Button>
+          </Link>
         </Space>
       ),
     },

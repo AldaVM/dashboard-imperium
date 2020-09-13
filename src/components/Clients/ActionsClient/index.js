@@ -19,7 +19,7 @@ export default function ActionsClient() {
   }
 
   return (
-    <div>
+    <>
       <Space>
         <Button
           type="primary"
@@ -40,6 +40,6 @@ export default function ActionsClient() {
       >
         <FormCustomer />
       </Modal>
-    </div>
+    </>
   );
 }
