@@ -4,7 +4,7 @@ import { imperiumBaseUrl } from "../environment";
 let urls = {
   test: `http://localhost:8000/api/v1`,
   development: imperiumBaseUrl,
-  production: "https://your-production-url.com/",
+  production: imperiumBaseUrl,
 };
 const api = Axios.create({
   baseURL: urls[process.env.NODE_ENV],
