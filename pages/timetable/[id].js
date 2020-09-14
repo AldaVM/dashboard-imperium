@@ -1,4 +1,5 @@
 import ShifProvider from "../../src/providers/ShiftProvider";
+import { URL_API } from "../../src/constants";
 
 const { LayoutAdmin } = require("../../src/layouts");
 const { ProtectRoute } = require("../../src/hoc/privateRouter");
@@ -20,9 +21,7 @@ export async function getServerSideProps(context) {
   try {
     const { query } = context;
 
-    const res = await fetch(
-      `http://localhost:8000/v1/api/timetable/${query.id}`
-    );
+    const res = await fetch(`${URL_API}/timetable/${query.id}`);
     const json = await res.json();
 
     return {

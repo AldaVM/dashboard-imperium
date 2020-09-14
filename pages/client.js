@@ -4,6 +4,7 @@ import { LayoutAdmin } from "../src/layouts";
 import { ProtectRoute } from "../src/hoc/privateRouter";
 import ClientsWrapper from "../src/components/Clients/ClientsWrapper";
 import { addElementKey } from "../src/helpers/parseValues";
+import { URL_API } from "../src/constants";
 
 function Client({ clients, countClients }) {
   return (
@@ -22,7 +23,7 @@ function Client({ clients, countClients }) {
 
 export async function getStaticProps() {
   try {
-    const res = await fetch("http://localhost:8000/v1/api/customer/");
+    const res = await fetch(`${URL_API}/customer`);
     const json = await res.json();
 
     return {

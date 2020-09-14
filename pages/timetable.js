@@ -4,6 +4,7 @@ import { LayoutAdmin } from "../src/layouts";
 import { addElementKey } from "../src/helpers/parseValues";
 import ShifProvider from "../src/providers/ShiftProvider";
 import ShiftWrapper from "../src/components/Shifts/ShiftWrapper";
+import { URL_API } from "../src/constants";
 
 function Timetable({ shifts, countShifts }) {
   return (
@@ -22,7 +23,7 @@ function Timetable({ shifts, countShifts }) {
 
 export async function getStaticProps() {
   try {
-    const res = await fetch("http://localhost:8000/v1/api/timetable/");
+    const res = await fetch(`${URL_API}/timetable`);
     const json = await res.json();
 
     return {
