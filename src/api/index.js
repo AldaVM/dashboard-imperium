@@ -2,7 +2,7 @@ import Axios from "axios";
 import { imperiumBaseUrl } from "../environment";
 
 let urls = {
-  test: `http://localhost:8000/api/v1`,
+  test: imperiumBaseUrl,
   development: imperiumBaseUrl,
   production: imperiumBaseUrl,
 };
