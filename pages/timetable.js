@@ -21,7 +21,7 @@ function Timetable({ shifts, countShifts }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps(context) {
   try {
     const res = await fetch(`${URL_API}/timetable`);
     const json = await res.json();
