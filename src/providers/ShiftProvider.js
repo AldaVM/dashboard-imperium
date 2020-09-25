@@ -38,9 +38,34 @@ export default function ShifProvider({ children, initialValues }) {
     }
   }
 
+  async function deleteShift(currentShift) {
+    if (currentShift.customerLength === 0) {
+      try {
+        const { deleteData } = serviceFetch(`timetable/${id}`);
+        const response = await deleteData();
+
+        validateResponse(response.status, "To view Shift");
+      } catch (error) {
+        validateResponse(error.status, "Error to request");
+      }
+    } else {
+      validateResponse(
+        500,
+        "El turno no puede ser eliminado, ya que tiene clientes inscritos"
+      );
+    }
+  }
+
   return (
     <ShiftContext.Provider
-      value={{ shifts, countShifts, updateShifts, updateShift, shift }}
+      value={{
+        shifts,
+        countShifts,
+        updateShifts,
+        updateShift,
+        shift,
+        deleteShift,
+      }}
     >
       {children}
     </ShiftContext.Provider>

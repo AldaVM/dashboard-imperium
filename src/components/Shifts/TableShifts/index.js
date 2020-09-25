@@ -1,5 +1,9 @@
 import { Table, Space, Button, Modal } from "antd";
-import { InfoCircleOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  InfoCircleOutlined,
+  EditOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import { useState } from "react";
 import FormShift from "../../Form/FormShift";
 import Link from "next/link";
@@ -18,6 +22,10 @@ export default function TableShifts({ shifts }) {
 
   function handleOk() {
     setIsVisible(false);
+  }
+
+  function deleteShift(currentShift) {
+    console.log(currentShift.customerLength);
   }
 
   function editShift(currentShift) {
@@ -98,6 +106,14 @@ export default function TableShifts({ shifts }) {
               Detail
             </Button>
           </Link>
+          <Button
+            icon={<DeleteOutlined />}
+            onClick={() => {
+              deleteShift(shift);
+            }}
+          >
+            Eliminar
+          </Button>
         </Space>
       ),
     },
