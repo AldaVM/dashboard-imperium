@@ -13,7 +13,7 @@ export default function ShifProvider({ children, initialValues }) {
       const { get } = serviceFetch("timetable");
       const response = await get();
 
-      validateResponse(response.status, "List Timetable");
+      validateResponse(response.status, "Listando turnos");
       setShifts(response?.data?.records);
       setCountShifts(response?.data?.count);
     } catch (error) {
@@ -28,7 +28,7 @@ export default function ShifProvider({ children, initialValues }) {
       const { get } = serviceFetch(`timetable/${id}`);
       const response = await get();
 
-      validateResponse(response.status, "To view Shift");
+      validateResponse(response.status, "Turno actualizado");
       setShift(response?.data);
     } catch (error) {
       validateResponse(error.status, "Error to request");
@@ -41,10 +41,11 @@ export default function ShifProvider({ children, initialValues }) {
   async function deleteShift(currentShift) {
     if (currentShift.customerLength === 0) {
       try {
-        const { deleteData } = serviceFetch(`timetable/${id}`);
+        const { deleteData } = serviceFetch(`timetable/${currentShift._id}`);
         const response = await deleteData();
 
-        validateResponse(response.status, "To view Shift");
+        validateResponse(response.status, "Turno eliminado");
+        await updateShifts();
       } catch (error) {
         validateResponse(error.status, "Error to request");
       }

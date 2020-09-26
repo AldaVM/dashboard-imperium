@@ -4,7 +4,8 @@ import {
   EditOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
+import { ShiftContext } from "../../../context";
+import { useState, useContext } from "react";
 import FormShift from "../../Form/FormShift";
 import Link from "next/link";
 
@@ -22,10 +23,6 @@ export default function TableShifts({ shifts }) {
 
   function handleOk() {
     setIsVisible(false);
-  }
-
-  function deleteShift(currentShift) {
-    console.log(currentShift.customerLength);
   }
 
   function editShift(currentShift) {
@@ -109,7 +106,7 @@ export default function TableShifts({ shifts }) {
           <Button
             icon={<DeleteOutlined />}
             onClick={() => {
-              deleteShift(shift);
+              shift.onDelete(shift);
             }}
           >
             Eliminar

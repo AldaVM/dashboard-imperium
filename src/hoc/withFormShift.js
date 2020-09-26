@@ -30,7 +30,7 @@ function withFormShift(Component) {
         const response = await update(values);
         setIsLoading(false);
 
-        validateResponse(response.status, "Updated Shift");
+        validateResponse(response.status, "Turno actualizado");
         updateShifts();
       } catch (error) {
         setIsLoading(false);

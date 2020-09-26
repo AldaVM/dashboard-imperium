@@ -7,8 +7,12 @@ import ActionsShift from "../ActionsShift";
 const { Title } = Typography;
 
 export default function ShiftWrapper() {
-  const { shifts, countShifts } = useContext(ShiftContext);
+  const { shifts, countShifts, deleteShift } = useContext(ShiftContext);
   const [shiftActions, setShiftActions] = useState(shifts);
+
+  function deleteOneShift(currentShift) {
+    deleteShift(currentShift);
+  }
 
   useEffect(() => {
     setShiftActions(
@@ -16,6 +20,7 @@ export default function ShiftWrapper() {
         accumulator.push({
           ...currentValue,
           key: currentValue._id,
+          onDelete: deleteOneShift,
         });
         return accumulator;
       }, [])
