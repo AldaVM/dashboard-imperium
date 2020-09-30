@@ -85,14 +85,10 @@ export default function TableClients({ clients }) {
     },
     {
       title: "Turno",
-      dataIndex: "timetable",
-      key: "timetable",
-      render: (timetable) => (
-        <ListItemTable>
-          <li>{timetable?.class_shift}</li>
-          <li>{timetable?.intermediate_days}</li>
-          <li>{timetable?.hour}</li>
-        </ListItemTable>
+      dataIndex: "type_timetable",
+      key: "type_timetable",
+      render: (type_timetable) => (
+        <span>{type_timetable ? `${type_timetable}` : "Sin Turno"}</span>
       ),
     },
     {
