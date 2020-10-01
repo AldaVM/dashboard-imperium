@@ -32,6 +32,7 @@ export default function TableClients({ clients }) {
       title: "Nombres",
       dataIndex: "names",
       key: "names",
+      fixed: "left",
     },
     {
       title: "Apellidos",
@@ -44,16 +45,6 @@ export default function TableClients({ clients }) {
       key: "dni",
     },
     {
-      title: "Birthday",
-      dataIndex: "birthday",
-      key: "birthday",
-    },
-    {
-      title: "Gender",
-      dataIndex: "gender",
-      key: "gender",
-    },
-    {
       title: "Creado el",
       dataIndex: "create_at",
       key: "create_at",
@@ -64,6 +55,14 @@ export default function TableClients({ clients }) {
         const year = dateCreate.getFullYear();
 
         return <span>{`${day}/${month + 1}/${year}`}</span>;
+      },
+    },
+    {
+      title: "Modalidad",
+      dataIndex: "type_modality",
+      key: "type_modality",
+      render: (type_modality) => {
+        return <span>{type_modality ? `${type_modality}` : "Sin Turno"}</span>;
       },
     },
     {
@@ -85,6 +84,26 @@ export default function TableClients({ clients }) {
     },
     {
       title: "Turno",
+      dataIndex: "timetable",
+      key: "timetable",
+      render: (timetable) => {
+        const type = timetable.length === 2 ? "Diario" : "Interdiario";
+
+        if (timetable.length > 0) {
+          return (
+            <ListItemTable>
+              <li>{timetable[0].class_shift}</li>
+              <li>{type}</li>
+              <li>{timetable[0].hour}</li>
+            </ListItemTable>
+          );
+        }
+
+        return <span>Sin Turno</span>;
+      },
+    },
+    {
+      title: "Turno Detail",
       dataIndex: "type_timetable",
       key: "type_timetable",
       render: (type_timetable) => (
@@ -92,8 +111,19 @@ export default function TableClients({ clients }) {
       ),
     },
     {
+      title: "Birthday",
+      dataIndex: "birthday",
+      key: "birthday",
+    },
+    {
+      title: "Gender",
+      dataIndex: "gender",
+      key: "gender",
+    },
+    {
       title: "Actions",
       key: "action",
+      fixed: "right",
       render: (client) => (
         <Space size="middle">
           <Button
@@ -131,7 +161,7 @@ export default function TableClients({ clients }) {
           updatedValues={updateClients}
         />
       </Modal>
-      <Table columns={columns} dataSource={clients} />
+      <Table columns={columns} dataSource={clients} scroll={{ x: 1300 }} />
     </>
   );
 }
