@@ -51,6 +51,7 @@ function FormShift({
           <Select>
             <Select.Option value="mañana">Mañana</Select.Option>
             <Select.Option value="noche">Nocturno</Select.Option>
+            <Select.Option value="open-box">Tarde - OpenBox</Select.Option>
           </Select>
         </Form.Item>
 

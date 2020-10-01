@@ -15,28 +15,66 @@ export default function ClientsWrapper() {
   const [isLoading, setIsLoading] = useState(false);
   const [clientsActions, setClientsActions] = useState(clients);
 
+  async function deleteClientTimetable(client) {
+    const { _id, timetable } = client;
+
+    if (timetable) {
+      const { update } = serviceFetch(`customer/${_id}`);
+      const updateClient = update({
+        timetable: [],
+        date_timetable: 0,
+        type_timetable: "",
+        type_modality: "",
+      });
+
+      const deleteCustomerTimetable = timetable.map((turn) => {
+        return serviceFetch(`timetable/delete_customer/${turn._id}`).create({
+          customer: _id,
+        });
+      });
+
+      try {
+        const [resCustomer, resTimetable] = await allFetch([
+          ...deleteCustomerTimetable,
+          updateClient,
+        ]);
+
+        validateResponse(resCustomer.status, resCustomer.message);
+        if (resTimetable) {
+          validateResponse(resTimetable.status, resTimetable.message);
+        }
+        setIsLoading(false);
+        updateClients();
+      } catch (error) {
+        setIsLoading(false);
+        validateResponse(error.status);
+      }
+    } else {
+      validateResponse(500, "El cliente selecionado no tiene turno registrado");
+    }
+  }
+
   async function deleteClient(client) {
     const { _id, timetable } = client;
 
-    let deleteCustomerTimetable = null;
+    let deleteCustomerTimetable = [];
     setIsLoading(true);
 
     const { deleteData } = serviceFetch(`customer/${_id}`);
     const deleteCustomer = deleteData();
 
     if (timetable) {
-      const { create } = serviceFetch(
-        `timetable/delete_customer/${timetable._id}`
-      );
-      deleteCustomerTimetable = create({
-        customer: _id,
+      deleteCustomerTimetable = timetable.map((turn) => {
+        return serviceFetch(`timetable/delete_customer/${turn._id}`).create({
+          customer: _id,
+        });
       });
     }
 
     try {
       const [resCustomer, resTimetable] = await allFetch([
         deleteCustomer,
-        deleteCustomerTimetable,
+        ...deleteCustomerTimetable,
       ]);
 
       validateResponse(resCustomer.status, resCustomer.message);
@@ -58,6 +96,7 @@ export default function ClientsWrapper() {
           ...currentValue,
           key: currentValue._id,
           delete: deleteClient,
+          deleteTimetable: deleteClientTimetable,
         });
         return accumulator;
       }, [])

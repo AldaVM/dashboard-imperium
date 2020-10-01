@@ -44,6 +44,10 @@ export default function TableShifts({ shifts }) {
           text: "Nocturno",
           value: "noche",
         },
+        {
+          text: "OpenBox",
+          value: "open-box",
+        },
       ],
       onFilter: (value, record) => record.class_shift.indexOf(value) === 0,
     },

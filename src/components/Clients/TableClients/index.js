@@ -1,6 +1,10 @@
 import { Table, Space, Button, Modal } from "antd";
 import { ListItemTable } from "./Styled";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  SelectOutlined,
+} from "@ant-design/icons";
 import { ClientContext } from "../../../context";
 import { useState, useContext } from "react";
 import { FormUpdateCustomer } from "../../Form";
@@ -142,6 +146,14 @@ export default function TableClients({ clients }) {
           >
             Eliminar
           </Button>
+          <Button
+            type="primary"
+            danger
+            onClick={() => client.deleteTimetable(client)}
+            icon={<SelectOutlined />}
+          >
+            Retirar de Turno
+          </Button>
         </Space>
       ),
     },
@@ -161,7 +173,11 @@ export default function TableClients({ clients }) {
           updatedValues={updateClients}
         />
       </Modal>
-      <Table columns={columns} dataSource={clients} scroll={{ x: 1300 }} />
+      <Table
+        columns={columns}
+        dataSource={clients}
+        scroll={{ x: 1500, y: 400 }}
+      />
     </>
   );
 }
