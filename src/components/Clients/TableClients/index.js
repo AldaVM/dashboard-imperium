@@ -1,18 +1,93 @@
-import { Table, Space, Button, Modal } from "antd";
-import { ListItemTable } from "./Styled";
+import { Table, Space, Button, Modal, Input } from "antd";
+import Highlighter from "react-highlight-words";
 import {
   DeleteOutlined,
   EditOutlined,
   SelectOutlined,
+  SearchOutlined,
 } from "@ant-design/icons";
 import { ClientContext } from "../../../context";
-import { useState, useContext } from "react";
+import { useState, useContext, useRef } from "react";
 import { FormUpdateCustomer } from "../../Form";
 
 export default function TableClients({ clients }) {
   const [isVisible, setIsVisible] = useState(false);
   const [client, setClient] = useState({});
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
   const { updateClients } = useContext(ClientContext);
+  const searchInput = useRef("");
+
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText("");
+  };
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ width: 188, marginBottom: 8, display: "block" }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Reset
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex]
+        ? record[dataIndex]
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
+        : "",
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ""}
+        />
+      ) : (
+        text
+      ),
+  });
 
   function showModal() {
     setIsVisible(!isVisible);
@@ -37,16 +112,20 @@ export default function TableClients({ clients }) {
       dataIndex: "names",
       key: "names",
       fixed: "left",
+      width: 180,
     },
     {
       title: "Apellidos",
       dataIndex: "surnames",
       key: "surnames",
+      width: 180,
     },
     {
       title: "DNI",
       dataIndex: "dni",
       key: "dni",
+      width: 120,
+      ...getColumnSearchProps("dni"),
     },
     {
       title: "Creado el",
@@ -60,6 +139,7 @@ export default function TableClients({ clients }) {
 
         return <span>{`${day}/${month + 1}/${year}`}</span>;
       },
+      width: 120,
     },
     {
       title: "Modalidad",
@@ -68,6 +148,7 @@ export default function TableClients({ clients }) {
       render: (type_modality) => {
         return <span>{type_modality ? `${type_modality}` : "Sin Turno"}</span>;
       },
+      width: 120,
     },
     {
       title: "Inscrito en Turno",
@@ -85,26 +166,7 @@ export default function TableClients({ clients }) {
           </span>
         );
       },
-    },
-    {
-      title: "Turno",
-      dataIndex: "timetable",
-      key: "timetable",
-      render: (timetable) => {
-        const type = timetable.length === 2 ? "Diario" : "Interdiario";
-
-        if (timetable.length > 0) {
-          return (
-            <ListItemTable>
-              <li>{timetable[0].class_shift}</li>
-              <li>{type}</li>
-              <li>{timetable[0].hour}</li>
-            </ListItemTable>
-          );
-        }
-
-        return <span>Sin Turno</span>;
-      },
+      width: 120,
     },
     {
       title: "Turno Detail",
@@ -113,21 +175,11 @@ export default function TableClients({ clients }) {
       render: (type_timetable) => (
         <span>{type_timetable ? `${type_timetable}` : "Sin Turno"}</span>
       ),
-    },
-    {
-      title: "Birthday",
-      dataIndex: "birthday",
-      key: "birthday",
-    },
-    {
-      title: "Gender",
-      dataIndex: "gender",
-      key: "gender",
+      width: 120,
     },
     {
       title: "Actions",
       key: "action",
-      fixed: "right",
       render: (client) => (
         <Space size="middle">
           <Button
@@ -173,11 +225,7 @@ export default function TableClients({ clients }) {
           updatedValues={updateClients}
         />
       </Modal>
-      <Table
-        columns={columns}
-        dataSource={clients}
-        scroll={{ x: 1500, y: 400 }}
-      />
+      <Table columns={columns} dataSource={clients} scroll={{ x: 0, y: 500 }} />
     </>
   );
 }
