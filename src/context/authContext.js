@@ -20,11 +20,12 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const {
-        data: {
-          data: { token, user },
-        },
-      } = await api.post("/auth/signin", { email, password });
+      const { data } = await api.post("/auth/signin", {
+        email,
+        password,
+      });
+
+      const { token, user } = data;
 
       if (token) {
         console.log("Got token");
@@ -34,6 +35,7 @@ export const AuthProvider = ({ children }) => {
         console.log("Got user", user);
         return true;
       }
+
       return false;
     } catch (error) {
       /* console.log(error?.response?.data?.message);  */
