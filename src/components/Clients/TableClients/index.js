@@ -5,18 +5,20 @@ import {
   EditOutlined,
   SelectOutlined,
   SearchOutlined,
+  SnippetsOutlined,
 } from "@ant-design/icons";
 import { ClientContext } from "../../../context";
 import { useState, useContext, useRef } from "react";
 import { FormUpdateCustomer } from "../../Form";
+import ListVouchers from "../../Voucher/VoucherList";
 
 export default function TableClients({ clients }) {
   const [isVisible, setIsVisible] = useState(false);
+  const [isVisibleVoucherList, setIsVisibleVoucherList] = useState(false);
   const [client, setClient] = useState({});
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const { updateClients } = useContext(ClientContext);
-  const searchInput = useRef("");
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -88,6 +90,23 @@ export default function TableClients({ clients }) {
         text
       ),
   });
+
+  function showModalVoucher() {
+    setIsVisibleVoucherList(!isVisibleVoucherList);
+  }
+
+  function handleCancelVoucher() {
+    setIsVisibleVoucherList(false);
+  }
+
+  function handleOkVoucher() {
+    setIsVisibleVoucherList(false);
+  }
+
+  function showVouchers(currentClient) {
+    showModalVoucher();
+    setClient(currentClient);
+  }
 
   function showModal() {
     setIsVisible(!isVisible);
@@ -183,6 +202,14 @@ export default function TableClients({ clients }) {
       render: (client) => (
         <Space size="middle">
           <Button
+            type="primary"
+            info
+            onClick={() => showVouchers(client)}
+            icon={<SnippetsOutlined />}
+          >
+            Ver Comprobantes
+          </Button>
+          <Button
             icon={<EditOutlined />}
             onClick={() => {
               editClient(client);
@@ -193,18 +220,18 @@ export default function TableClients({ clients }) {
           <Button
             type="primary"
             danger
-            onClick={() => client.delete(client)}
-            icon={<DeleteOutlined />}
-          >
-            Eliminar
-          </Button>
-          <Button
-            type="primary"
-            danger
             onClick={() => client.deleteTimetable(client)}
             icon={<SelectOutlined />}
           >
             Retirar de Turno
+          </Button>
+          <Button
+            type="primary"
+            danger
+            onClick={() => client.delete(client)}
+            icon={<DeleteOutlined />}
+          >
+            Eliminar
           </Button>
         </Space>
       ),
@@ -224,6 +251,15 @@ export default function TableClients({ clients }) {
           initialValues={client}
           updatedValues={updateClients}
         />
+      </Modal>
+      <Modal
+        title="Listar Vouchers"
+        visible={isVisibleVoucherList}
+        onCancel={handleCancelVoucher}
+        onOk={handleOkVoucher}
+        footer={null}
+      >
+        <ListVouchers client={client} />
       </Modal>
       <Table columns={columns} dataSource={clients} scroll={{ x: 0, y: 500 }} />
     </>
