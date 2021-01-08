@@ -11,6 +11,7 @@ function Paid() {
     dni: "",
     type_modality: "",
     turn: "",
+    status_paid: ""
   };
 
   return (

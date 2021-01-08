@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { DEFAULT_CLIENT_404 } from "../constants";
 import { ClientContext } from "../context";
 import serviceFetch from "../helpers/closureFetch";
 import validateResponse from "../helpers/validationsReponse";
@@ -32,27 +33,15 @@ export default function ClientProvider({ children, initialValues }) {
       });
 
       validateResponse(response.status, "Cliente encontrado");
-      if(response?.data.length > 0){
+      if (response?.data.length > 0) {
         setClient(response?.data[0]);
-      }else{
-        setClient({
-          names: "No encontrado",
-          surnames: "No encontrado",
-          dni: "No encontrado",
-          type_modality: "No encontrado",
-          turn: "No encontrado"
-        })
+      } else {
+        setClient(DEFAULT_CLIENT_404);
       }
-      
     } catch (error) {
+      console.error(error);
       validateResponse(error.status, "Error to request");
-      setClient({
-        names: "No encontrado",
-        surnames: "No encontrado",
-        dni: "No encontrado",
-        type_modality: "No encontrado",
-        turn: "No encontrado"
-      });
+      setClient(DEFAULT_CLIENT_404);
     }
   }
 

@@ -1,6 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { Form, Input, Button } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { UserOutlined, SearchOutlined } from "@ant-design/icons";
 import { ClientContext } from "../../../context";
 
 export default function FormSearchCustomer() {
@@ -46,6 +46,7 @@ export default function FormSearchCustomer() {
           type="primary"
           htmlType="submit"
           className="login-form-button"
+          icon={<SearchOutlined />}
           block
         >
           Buscar
