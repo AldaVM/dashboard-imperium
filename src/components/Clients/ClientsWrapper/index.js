@@ -89,11 +89,6 @@ export default function ClientsWrapper() {
     }
   }
 
-  async function getListVoucher(client) {
-    console.log("hola");
-    console.log(client.vouchers);
-  }
-
   useEffect(() => {
     setClientsActions(
       clients.reduce((accumulator, currentValue) => {
@@ -102,7 +97,6 @@ export default function ClientsWrapper() {
           key: currentValue._id,
           delete: deleteClient,
           deleteTimetable: deleteClientTimetable,
-          getListVoucher: getListVoucher,
         });
         return accumulator;
       }, [])

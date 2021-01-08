@@ -6,6 +6,7 @@ import {
   UsergroupAddOutlined,
   LogoutOutlined,
   CalendarOutlined,
+  MoneyCollectOutlined,
 } from "@ant-design/icons";
 import { ItemListMenu } from "./Styled";
 import { useAuth } from "../../../hooks";
@@ -34,8 +35,13 @@ export default function SidebarComponent({ collapsed }) {
               <a>Perfil</a>
             </Link>
           </ItemListMenu>
+          <ItemListMenu key="4" icon={<MoneyCollectOutlined />}>
+            <Link href="/paid">
+              <a>Pagos</a>
+            </Link>
+          </ItemListMenu>
           <ItemListMenu
-            key="4"
+            key="5"
             icon={<LogoutOutlined />}
             onClick={() => logout()}
           >
