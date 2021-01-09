@@ -253,7 +253,7 @@ export default function TableClients({ clients }) {
         />
       </Modal>
       <Modal
-        title="Listar Vouchers"
+        title={`Cliente: ${client?.names} ${client?.surnames}`}
         visible={isVisibleVoucherList}
         onCancel={handleCancelVoucher}
         onOk={handleOkVoucher}

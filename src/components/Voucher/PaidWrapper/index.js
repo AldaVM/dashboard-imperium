@@ -1,9 +1,10 @@
-import { Typography, Tag } from "antd";
+import { Typography, Tag, Space } from "antd";
 import { useContext } from "react";
 import TablePaids from "../TableVoucher";
 import FormSearchCustomer from "../../Clients/SearchClient";
 import ClientCard from "../../Clients/ClientCard";
 import { ClientContext } from "../../../context";
+import PaidCard from "../PaidCard";
 
 const { Title } = Typography;
 
@@ -15,25 +16,25 @@ export default function PaidWrapper() {
       title: "Monto a pagar",
       dataIndex: "rate",
       key: "rate",
-      width: 120,
+      width: 60,
     },
     {
       title: "Monto pagado",
       dataIndex: "amount_paid",
       key: "amount_paid",
-      width: 120,
+      width: 60,
     },
     {
       title: "Monto pendiente",
       dataIndex: "residue",
       key: "residue",
-      width: 120,
+      width: 60,
     },
     {
       title: "Estado del pago",
       dataIndex: "status_paid",
       key: "status_paid",
-      width: 120,
+      width: 60,
       render: (status_paid) => {
         let color = status_paid === "pending" ? "tomato" : "green";
 
@@ -47,16 +48,23 @@ export default function PaidWrapper() {
       },
     },
     {
+      title: "Turno",
+      dataIndex: "turn_detail",
+      key: "turn_detail",
+      width: 100,
+    },
+
+    {
       title: "Fecha de creación",
       dataIndex: "date_init",
       key: "date_init",
-      width: 120,
+      width: 100,
     },
     {
       title: "Fecha de expiración",
       dataIndex: "date_expiration",
       key: "date_expiration",
-      width: 120,
+      width: 100,
     },
   ];
 
@@ -64,7 +72,13 @@ export default function PaidWrapper() {
     <div>
       <Title>Administrar Pagos</Title>
       <FormSearchCustomer />
-      {client.names !== "" && <ClientCard client={client} />}
+      <Space direction="horizontal" align="start">
+        {client.names !== "" && <ClientCard client={client} />}
+        {client.vouchers && client?.vouchers.length > 0 && (
+          <PaidCard client={client} />
+        )}
+      </Space>
+
       <TablePaids paids={client.vouchers} columns={columns} />
     </div>
   );

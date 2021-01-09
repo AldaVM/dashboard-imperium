@@ -11,7 +11,8 @@ function Paid() {
     dni: "",
     type_modality: "",
     turn: "",
-    status_paid: ""
+    status_paid: "",
+    timetable: [],
   };
 
   return (

@@ -37,7 +37,7 @@ export default function SidebarComponent({ collapsed }) {
           </ItemListMenu>
           <ItemListMenu key="4" icon={<MoneyCollectOutlined />}>
             <Link href="/paid">
-              <a>Pagos</a>
+              <a>Registrar Voucher</a>
             </Link>
           </ItemListMenu>
           <ItemListMenu
