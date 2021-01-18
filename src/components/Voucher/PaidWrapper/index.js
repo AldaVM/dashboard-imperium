@@ -1,15 +1,20 @@
-import { Typography, Tag, Space } from "antd";
-import { useContext } from "react";
+import { Typography, Tag, Space, Button } from "antd";
+import { MoneyCollectFilled } from "@ant-design/icons";
+import { useContext, useState } from "react";
+import { VoucherProvider } from "../../../providers";
 import TablePaids from "../TableVoucher";
+import FormVoucher from "../../Form/FormVoucher";
 import FormSearchCustomer from "../../Clients/SearchClient";
 import ClientCard from "../../Clients/ClientCard";
 import { ClientContext } from "../../../context";
 import PaidCard from "../PaidCard";
+import Modal from "antd/lib/modal/Modal";
 
 const { Title } = Typography;
 
 export default function PaidWrapper() {
   const { client } = useContext(ClientContext);
+  const [isVisible, setIsVisible] = useState(false);
 
   const columns = [
     {
@@ -68,10 +73,52 @@ export default function PaidWrapper() {
     },
   ];
 
+  function showModal() {
+    console.log(client);
+    setIsVisible(!isVisible);
+  }
+
+  function handleCancel() {
+    setIsVisible(false);
+  }
+
+  function handleOk() {
+    setIsVisible(false);
+  }
+
   return (
     <div>
       <Title>Administrar Pagos</Title>
-      <FormSearchCustomer />
+      <Space direction="horizontal" align="start">
+        <FormSearchCustomer />
+        {client.dni.length == 8 && (
+          <Button
+            type="primary"
+            className="login-form-button"
+            icon={<MoneyCollectFilled />}
+            onClick={showModal}
+            block
+          >
+            Registrar Voucher
+          </Button>
+        )}
+      </Space>
+      <br />
+      <Modal
+        title="Nuevo Cliente"
+        visible={isVisible}
+        onCancel={handleCancel}
+        onOk={handleOk}
+        footer={null}
+      >
+        <VoucherProvider
+          initialValues={{
+            voucher: {},
+          }}
+        >
+          <FormVoucher />
+        </VoucherProvider>
+      </Modal>
       <Space direction="horizontal" align="start">
         {client.names !== "" && <ClientCard client={client} />}
         {client.vouchers && client?.vouchers.length > 0 && (
