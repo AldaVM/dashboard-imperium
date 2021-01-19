@@ -113,8 +113,8 @@ export default function FormVoucher() {
           ]}
         >
           <Select>
-            <Select.Option value="mañana">Mensual</Select.Option>
-            <Select.Option value="noche">Trimestral</Select.Option>
+            <Select.Option value="MENSUAL">Mensual</Select.Option>
+            <Select.Option value="TRIMESTRAL">Trimestral</Select.Option>
           </Select>
         </Form.Item>
         <Form.Item {...tailLayoutForm}>
