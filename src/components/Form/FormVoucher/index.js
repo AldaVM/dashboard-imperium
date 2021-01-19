@@ -1,7 +1,6 @@
-import { Form, Input, Button, Spin, Select } from "antd";
+import { Form, Input, Button, Spin, Select, InputNumber } from "antd";
 import { useState, useContext } from "react";
 import { ClientContext, VoucherContext } from "../../../context";
-import validateResponse from "../../../helpers/validationsReponse";
 import { layoutForm, tailLayoutForm } from "../complements";
 
 export default function FormVoucher() {
@@ -41,7 +40,7 @@ export default function FormVoucher() {
             },
           ]}
         >
-          <Input placeholder="Ingresa la tarifa del paquete" />
+          <InputNumber min={1} placeholder="Ingresa la tarifa del paquete" />
         </Form.Item>
         <Form.Item
           label="Monto pagado"
@@ -53,7 +52,7 @@ export default function FormVoucher() {
             },
           ]}
         >
-          <Input placeholder="Ingresa el monto que pagará el cliente" />
+          <InputNumber min={1} placeholder="Ingresa el monto que pagará el cliente" />
         </Form.Item>
         <Form.Item label="Fecha de inicio" name="date_init">
           <Input

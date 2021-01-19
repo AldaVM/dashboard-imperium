@@ -1,5 +1,9 @@
 import { Typography, Tag, Space, Button } from "antd";
-import { MoneyCollectFilled } from "@ant-design/icons";
+import {
+  MoneyCollectFilled,
+  DeleteOutlined,
+  EditOutlined,
+} from "@ant-design/icons";
 import { useContext, useState } from "react";
 import { VoucherProvider } from "../../../providers";
 import TablePaids from "../TableVoucher";
@@ -58,18 +62,64 @@ export default function PaidWrapper() {
       key: "turn_detail",
       width: 100,
     },
-
+    {
+      title: "Modalidad",
+      dataIndex: "type_modality",
+      key: "type_modality",
+      width: 80,
+    },
     {
       title: "Fecha de creación",
       dataIndex: "date_init",
       key: "date_init",
-      width: 100,
+      width: 120,
     },
     {
       title: "Fecha de expiración",
       dataIndex: "date_expiration",
       key: "date_expiration",
+      width: 120,
+    },
+    {
+      title: "Vigencia",
+      dataIndex: "date_expiration",
+      key: "date_expiration",
       width: 100,
+      render: (date_expiration) => {
+        let currentDate = new Date();
+
+        let isValidity = currentDate > new Date(date_expiration);
+        let validity = isValidity ? "Expirado" : "Vigente";
+        let color = isValidity ? "tomato" : "green";
+
+        return (
+          <>
+            <Tag color={color} key={date_expiration}>
+              {validity.toUpperCase()}
+            </Tag>
+          </>
+        );
+      },
+    },
+    {
+      title: "Actions",
+      key: "action",
+      width: 100,
+      render: (data) => (
+        <Space size="middle">
+          <Button icon={<EditOutlined />} onClick={() => console.log(data)}>
+            Modificar
+          </Button>
+          <Button
+            type="primary"
+            danger
+            onClick={() => console.log("hola")}
+            icon={<DeleteOutlined />}
+          >
+            Eliminar
+          </Button>
+        </Space>
+      ),
     },
   ];
 

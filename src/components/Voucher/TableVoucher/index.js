@@ -8,7 +8,7 @@ export default function TablePaids({ paids, columns }) {
     <>
       <Title level={2}>Lista de pagos</Title>
       <TableContainer>
-        <Table columns={columns} dataSource={paids} scroll={{ x: 0, y: 500 }} />
+        <Table columns={columns} dataSource={paids} scroll={{ x: 500, y: 500 }} />
       </TableContainer>
     </>
   );
