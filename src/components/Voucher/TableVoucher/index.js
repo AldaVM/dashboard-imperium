@@ -12,7 +12,7 @@ export default function TablePaids({ paids, columns, isPagination = true }) {
           columns={columns}
           dataSource={paids}
           pagination={isPagination}
-          scroll={{ x: 0, y: 500 }}
+          scroll={{ x: "calc(700px + 50%)", y: 500 }}
         />
       </TableContainer>
     </>

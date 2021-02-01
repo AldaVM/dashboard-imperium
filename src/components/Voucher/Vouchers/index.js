@@ -21,16 +21,25 @@ export default function VouchersWrapper() {
   };
 
   const columns = [
-    ...columnsGeneric,
     {
       title: "Cliente",
       dataIndex: "customer",
-      key: "customer",
+      key: "customer_name",
       width: 100,
       render: (customer) => {
         return <>{`${customer?.names} ${customer?.surnames}`}</>;
       },
     },
+    {
+      title: "DNI",
+      dataIndex: "customer",
+      key: "customer_dni",
+      width: 100,
+      render: (customer) => {
+        return <>{`${customer?.dni}`}</>;
+      },
+    },
+    ...columnsGeneric,
   ];
 
   return (
