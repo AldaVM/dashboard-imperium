@@ -40,6 +40,11 @@ export default function SidebarComponent({ collapsed }) {
               <a>Registrar Voucher</a>
             </Link>
           </ItemListMenu>
+          <ItemListMenu key="6" icon={<MoneyCollectOutlined />}>
+            <Link href="/vouchers">
+              <a>Comprobantes</a>
+            </Link>
+          </ItemListMenu>
           <ItemListMenu
             key="5"
             icon={<LogoutOutlined />}

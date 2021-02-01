@@ -7,107 +7,42 @@ import {
 import { useContext, useState } from "react";
 import { VoucherProvider } from "../../../providers";
 import TablePaids from "../TableVoucher";
+import { columnsGeneric } from "../TableVoucher/columns";
 import FormVoucher from "../../Form/FormVoucher";
 import FormSearchCustomer from "../../Clients/SearchClient";
 import ClientCard from "../../Clients/ClientCard";
 import { ClientContext } from "../../../context";
 import PaidCard from "../PaidCard";
 import Modal from "antd/lib/modal/Modal";
+import { addElementKey } from "../../../helpers/parseValues";
 
 const { Title } = Typography;
 
 export default function PaidWrapper() {
   const { client } = useContext(ClientContext);
+  const [currentVoucher, setCurrentVoucher] = useState({});
   const [isVisible, setIsVisible] = useState(false);
+  const [isVisibleUpdate, setIsVisibleUpdate] = useState(false);
+
+  function UpdateVoucher(data) {
+    setCurrentVoucher(data);
+    showModalUpdate();
+  }
 
   const columns = [
-    {
-      title: "Monto a pagar",
-      dataIndex: "rate",
-      key: "rate",
-      width: 60,
-    },
-    {
-      title: "Monto pagado",
-      dataIndex: "amount_paid",
-      key: "amount_paid",
-      width: 60,
-    },
-    {
-      title: "Monto pendiente",
-      dataIndex: "residue",
-      key: "residue",
-      width: 60,
-    },
-    {
-      title: "Estado del pago",
-      dataIndex: "status_paid",
-      key: "status_paid",
-      width: 60,
-      render: (status_paid) => {
-        let color = status_paid === "pending" ? "tomato" : "green";
-
-        return (
-          <>
-            <Tag color={color} key={status_paid}>
-              {status_paid.toUpperCase()}
-            </Tag>
-          </>
-        );
-      },
-    },
-    {
-      title: "Turno",
-      dataIndex: "turn_detail",
-      key: "turn_detail",
-      width: 100,
-    },
-    {
-      title: "Modalidad",
-      dataIndex: "type_modality",
-      key: "type_modality",
-      width: 80,
-    },
-    {
-      title: "Fecha de creación",
-      dataIndex: "date_init",
-      key: "date_init",
-      width: 120,
-    },
-    {
-      title: "Fecha de expiración",
-      dataIndex: "date_expiration",
-      key: "date_expiration",
-      width: 120,
-    },
-    {
-      title: "Vigencia",
-      dataIndex: "date_expiration",
-      key: "date_expiration",
-      width: 100,
-      render: (date_expiration) => {
-        let currentDate = new Date();
-
-        let isValidity = currentDate > new Date(date_expiration);
-        let validity = isValidity ? "Expirado" : "Vigente";
-        let color = isValidity ? "tomato" : "green";
-
-        return (
-          <>
-            <Tag color={color} key={date_expiration}>
-              {validity.toUpperCase()}
-            </Tag>
-          </>
-        );
-      },
-    },
+    ...columnsGeneric,
     {
       title: "Actions",
       key: "action",
       width: 100,
       render: (data) => (
         <Space size="middle">
-          <Button icon={<EditOutlined />} onClick={() => console.log(data)}>
+          <Button
+            icon={<EditOutlined />}
+            onClick={() => {
+              UpdateVoucher(data);
+            }}
+          >
             Modificar
           </Button>
           <Button
@@ -124,7 +59,6 @@ export default function PaidWrapper() {
   ];
 
   function showModal() {
-    console.log(client);
     setIsVisible(!isVisible);
   }
 
@@ -134,6 +68,18 @@ export default function PaidWrapper() {
 
   function handleOk() {
     setIsVisible(false);
+  }
+
+  function showModalUpdate() {
+    setIsVisibleUpdate(!isVisibleUpdate);
+  }
+
+  function handleCancelUpdate() {
+    setIsVisibleUpdate(false);
+  }
+
+  function handleOkUpdate() {
+    setIsVisibleUpdate(false);
   }
 
   return (
@@ -155,7 +101,7 @@ export default function PaidWrapper() {
       </Space>
       <br />
       <Modal
-        title="Nuevo Cliente"
+        title="Registar Comprobante"
         visible={isVisible}
         onCancel={handleCancel}
         onOk={handleOk}
@@ -169,6 +115,21 @@ export default function PaidWrapper() {
           <FormVoucher />
         </VoucherProvider>
       </Modal>
+      <Modal
+        title="Modificar Comprobante"
+        visible={isVisibleUpdate}
+        onCancel={handleCancelUpdate}
+        onOk={handleOkUpdate}
+        footer={null}
+      >
+        <VoucherProvider
+          initialValues={{
+            voucher: {},
+          }}
+        >
+          <FormVoucher initialValues={currentVoucher} isUpdated={true} />
+        </VoucherProvider>
+      </Modal>
       <Space direction="horizontal" align="start">
         {client.names !== "" && <ClientCard client={client} />}
         {client.vouchers && client?.vouchers.length > 0 && (
@@ -176,7 +137,7 @@ export default function PaidWrapper() {
         )}
       </Space>
 
-      <TablePaids paids={client.vouchers} columns={columns} />
+      <TablePaids paids={addElementKey(client.vouchers)} columns={columns} />
     </div>
   );
 }
