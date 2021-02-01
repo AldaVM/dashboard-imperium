@@ -11,7 +11,6 @@ export default function TablePaids({ paids, columns, isPagination = true }) {
         <Table
           columns={columns}
           dataSource={paids}
-          scroll={{ x: 500, y: 500 }}
           pagination={isPagination}
           scroll={{ x: 0, y: 500 }}
         />
