@@ -24,9 +24,9 @@ export default function PaidCard({ client }) {
       <p>Total tarifas: S/ {reportTotal.total_rate}</p>
       <p>Total montos pagados: S/ {reportTotal.total_amount_paid}</p>
       <p>Total montos pendientes: S/ {reportTotal.total_residue}</p>
-      <p>Cantidad vouchers cancelados: S/ {reportTotal.count_completed}</p>
-      <p>Cantidad vouchers pendientes: S/ {reportTotal.count_residue}</p>
-      <p>Vouchers registrados: S/ {client?.vouchers.length}</p>
+      <p>Cantidad vouchers cancelados: # {reportTotal.count_completed}</p>
+      <p>Cantidad vouchers pendientes: # {reportTotal.count_residue}</p>
+      <p>Vouchers registrados: # {client?.vouchers.length}</p>
     </Card>
   );
 }

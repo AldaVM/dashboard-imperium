@@ -1,4 +1,5 @@
 import { URL_API } from "../constants";
+import Cookies from "js-cookie";
 
 const serviceFetch = (url) => (service) => {
   const URL = `${url}/${service}`;
@@ -82,7 +83,10 @@ const serviceFetch = (url) => (service) => {
         const response = await fetch(URL, {
           method: "DELETE",
           mode: "cors",
-          ...config,
+          headers: {
+            token: Cookies.get("token"),
+            Authorization: Cookies.get("token"),
+          },
         });
         return await response.json();
       } catch (error) {

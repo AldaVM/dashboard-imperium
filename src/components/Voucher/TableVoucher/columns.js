@@ -112,4 +112,10 @@ export const columnsGeneric = [
     key: "type_modality",
     width: 80,
   },
+  {
+    title: "Horario",
+    dataIndex: "hours_turn",
+    key: "hours_turn",
+    width: 80,
+  },
 ];

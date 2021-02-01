@@ -1,4 +1,4 @@
-import { Typography, Tag, Space, Button } from "antd";
+import { Typography, Tag, Space, Button, Spin } from "antd";
 import {
   MoneyCollectFilled,
   DeleteOutlined,
@@ -11,7 +11,8 @@ import { columnsGeneric } from "../TableVoucher/columns";
 import FormVoucher from "../../Form/FormVoucher";
 import FormSearchCustomer from "../../Clients/SearchClient";
 import ClientCard from "../../Clients/ClientCard";
-import { ClientContext } from "../../../context";
+import { ContainerSpin, WrapperSpin } from "../../Shared/SpinTable";
+import { ClientContext, VoucherContext } from "../../../context";
 import PaidCard from "../PaidCard";
 import Modal from "antd/lib/modal/Modal";
 import { addElementKey } from "../../../helpers/parseValues";
@@ -19,14 +20,23 @@ import { addElementKey } from "../../../helpers/parseValues";
 const { Title } = Typography;
 
 export default function PaidWrapper() {
-  const { client } = useContext(ClientContext);
+  const { client, getClientByDNI } = useContext(ClientContext);
+  const { deleteVoucher } = useContext(VoucherContext);
   const [currentVoucher, setCurrentVoucher] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isVisibleUpdate, setIsVisibleUpdate] = useState(false);
 
   function UpdateVoucher(data) {
     setCurrentVoucher(data);
     showModalUpdate();
+  }
+
+  async function removeVoucher(idVoucher) {
+    setIsLoading(true);
+    await deleteVoucher(idVoucher);
+    await getClientByDNI(client.dni);
+    setIsLoading(false);
   }
 
   const columns = [
@@ -48,7 +58,7 @@ export default function PaidWrapper() {
           <Button
             type="primary"
             danger
-            onClick={() => console.log("hola")}
+            onClick={() => removeVoucher(data._id)}
             icon={<DeleteOutlined />}
           >
             Eliminar
@@ -138,6 +148,13 @@ export default function PaidWrapper() {
       </Space>
 
       <TablePaids paids={addElementKey(client.vouchers)} columns={columns} />
+      <ContainerSpin>
+        {isLoading && (
+          <WrapperSpin>
+            <Spin size="large" />
+          </WrapperSpin>
+        )}
+      </ContainerSpin>
     </div>
   );
 }

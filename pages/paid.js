@@ -1,6 +1,6 @@
 import React from "react";
 import { LayoutAdmin } from "../src/layouts";
-import { ClientProvider } from "../src/providers";
+import { ClientProvider, VoucherProvider } from "../src/providers";
 import { ProtectRoute } from "../src/hoc/privateRouter";
 import PaidWrapper from "../src/components/Voucher/PaidWrapper";
 
@@ -22,7 +22,14 @@ function Paid() {
       }}
     >
       <LayoutAdmin>
-        <PaidWrapper />
+        <VoucherProvider
+          initialValues={{
+            voucher: {},
+            vouchers: [],
+          }}
+        >
+          <PaidWrapper />
+        </VoucherProvider>
       </LayoutAdmin>
     </ClientProvider>
   );

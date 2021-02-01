@@ -20,8 +20,8 @@ export default function VoucherProvider({ children, initialValues }) {
       setCountVouchers(response?.data?.count);
     } catch (error) {
       validateResponse(error.status, "Error to request");
-      setVoucher([]);
-      setVoucher(0);
+      setVouchers([]);
+      setCountVouchers(0);
     }
   }
 
@@ -34,11 +34,8 @@ export default function VoucherProvider({ children, initialValues }) {
       });
 
       validateResponse(response.status, "Nuevo voucher registrado");
-      setVoucher(response?.data?.records);
     } catch (error) {
       validateResponse(error.status, "Error to request");
-      setVoucher([]);
-      setVoucher(0);
     }
   }
 
@@ -49,11 +46,18 @@ export default function VoucherProvider({ children, initialValues }) {
         ...bodyVocher,
       });
       validateResponse(response.status, "Se actualizo el comprobante");
-      setVoucher(response?.data?.records);
     } catch (error) {
       validateResponse(error.status, "Error to request");
-      setVoucher([]);
-      setVoucher(0);
+    }
+  }
+
+  async function deleteVoucher(idVoucher) {
+    try {
+      const { deleteData } = serviceFetch(`voucher/${idVoucher}`);
+      const response = await deleteData();
+      validateResponse(response.status, "Se elimino el comprobante");
+    } catch (error) {
+      validateResponse(error.status, "Error to request");
     }
   }
 
@@ -66,6 +70,7 @@ export default function VoucherProvider({ children, initialValues }) {
         getVouchers,
         createVoucher,
         updateVoucher,
+        deleteVoucher,
       }}
     >
       {children}
