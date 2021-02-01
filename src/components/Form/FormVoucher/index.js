@@ -80,6 +80,7 @@ export default function FormVoucher({ initialValues, isUpdated = false }) {
             placeholder="Ingresa el monto que pagará el cliente"
           />
         </Form.Item>
+
         {!isUpdated && (
           <Form.Item label="Fecha de inicio" name="date_init">
             <Input
@@ -94,31 +95,18 @@ export default function FormVoucher({ initialValues, isUpdated = false }) {
             />
           </Form.Item>
         )}
-        {!isUpdated && (
-          <Form.Item label="Fecha de expirtación" name="date_expiration">
-            <Input
-              placeholder="Ingresa la fecha en la que expira el periodo de cliente"
-              type="date"
-              rules={[
-                {
-                  required: true,
-                  message: "Este campo es requerido",
-                },
-              ]}
-            />
-          </Form.Item>
-        )}
-        <Form.Item
-          label="Rango de hora"
-          name="hours_turn"
-          rules={[
-            {
-              required: true,
-              message: "Este campo es requerido",
-            },
-          ]}
-        >
-          <Input placeholder="Ejemplo: 07am-08am" />
+
+        <Form.Item label="Fecha de expirtación" name="date_expiration">
+          <Input
+            placeholder="Ingresa la fecha en la que expira el periodo de cliente"
+            type="date"
+            rules={[
+              {
+                required: true,
+                message: "Este campo es requerido",
+              },
+            ]}
+          />
         </Form.Item>
         <Form.Item
           label="Detalle del turno"
@@ -131,12 +119,7 @@ export default function FormVoucher({ initialValues, isUpdated = false }) {
           ]}
         >
           <Select>
-            <Select.Option value="INTERDIARIO (L-M-V)">
-              INTERDIARIO (L-M-V)
-            </Select.Option>
-            <Select.Option value="INTERDIARIO (M-J-S)">
-              INTERDIARIO (M-J-S)
-            </Select.Option>
+            <Select.Option value="INTERDIARIO">INTERDIARIO</Select.Option>
             <Select.Option value="DIARIO">DIARIO</Select.Option>
           </Select>
         </Form.Item>

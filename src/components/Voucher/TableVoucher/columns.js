@@ -5,25 +5,25 @@ export const columnsGeneric = [
     title: "Monto a pagar",
     dataIndex: "rate",
     key: "rate",
-    width: 60,
+    width: 100,
   },
   {
     title: "Monto pagado",
     dataIndex: "amount_paid",
     key: "amount_paid",
-    width: 60,
+    width: 100,
   },
   {
     title: "Monto pendiente",
     dataIndex: "residue",
     key: "residue",
-    width: 60,
+    width: 100,
   },
   {
-    title: "Estado del pago",
+    title: "Estado Pago",
     dataIndex: "status_paid",
     key: "status_paid",
-    width: 60,
+    width: 100,
     render: (status_paid) => {
       let color = status_paid === "pending" ? "tomato" : "green";
 
@@ -73,7 +73,7 @@ export const columnsGeneric = [
           : `No vigente`;
 
       let color =
-        differenceInDays > 0 && differenceInDays <= 3
+        differenceInDays > 0 && differenceInDays <= 5
           ? "tomato"
           : differenceInDays < 0
           ? "gray"
@@ -110,12 +110,6 @@ export const columnsGeneric = [
     title: "Modalidad",
     dataIndex: "type_modality",
     key: "type_modality",
-    width: 80,
-  },
-  {
-    title: "Horario",
-    dataIndex: "hours_turn",
-    key: "hours_turn",
     width: 80,
   },
 ];

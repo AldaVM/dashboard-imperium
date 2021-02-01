@@ -6,6 +6,8 @@ import validateResponse from "../helpers/validationsReponse";
 export default function VoucherProvider({ children, initialValues }) {
   const [voucher, setVoucher] = useState(initialValues.voucher);
   const [vouchers, setVouchers] = useState(initialValues.vouchers);
+  const [typeFilter, setTypeFilter] = useState(null);
+  const [statusPaid, setStatusPaid] = useState(null);
   const [countVouchers, setCountVouchers] = useState(
     initialValues.countVouchers
   );
@@ -18,10 +20,14 @@ export default function VoucherProvider({ children, initialValues }) {
       validateResponse(response.status, "Listando Vouchers");
       setVouchers(response?.data?.records);
       setCountVouchers(response?.data?.count);
+      setTypeFilter(null);
+      setStatusPaid(null);
     } catch (error) {
       validateResponse(error.status, "Error to request");
       setVouchers([]);
       setCountVouchers(0);
+      setTypeFilter(null);
+      setStatusPaid(null);
     }
   }
 
@@ -61,16 +67,47 @@ export default function VoucherProvider({ children, initialValues }) {
     }
   }
 
+  async function getVouchersByStatusPaid(statusMessage, pageNum) {
+    try {
+      const { create } = serviceFetch(
+        `voucher/find_property?pageSize=10&pageNum=${pageNum}`
+      );
+      const response = await create({
+        items: {
+          status_paid: statusMessage,
+        },
+      });
+
+      validateResponse(
+        response.status,
+        "Listando comprobantes con el filtro aplicado"
+      );
+      setVouchers(response?.data);
+      setCountVouchers(response?.count);
+      setTypeFilter("status_paid");
+      setStatusPaid(statusMessage);
+    } catch (error) {
+      validateResponse(error.status, "Error to request");
+      setVouchers([]);
+      setCountVouchers(0);
+      setTypeFilter(null);
+      setStatusPaid(null);
+    }
+  }
+
   return (
     <VoucherContext.Provider
       value={{
         voucher,
         vouchers,
         countVouchers,
+        typeFilter,
+        statusPaid,
         getVouchers,
         createVoucher,
         updateVoucher,
         deleteVoucher,
+        getVouchersByStatusPaid,
       }}
     >
       {children}

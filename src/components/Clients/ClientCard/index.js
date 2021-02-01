@@ -19,6 +19,7 @@ export default function CardClient({ client }) {
       </p>
       <p>DNI: {client.dni}</p>
       <p>Turno: {turn.toUpperCase()}</p>
+      <p>Número de celular: {client.phone_number}</p>
       <p>Modalidad: {client.type_modality}</p>
       <p>Estado últimos pagos: {client.status_paid}</p>
     </Card>

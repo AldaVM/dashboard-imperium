@@ -71,6 +71,18 @@ export default function FormCustomer() {
         >
           <Input placeholder="Ingresa el dni del cliente" />
         </Form.Item>
+        <Form.Item
+          label="Número de celular"
+          name="phone_number"
+          rules={[
+            {
+              required: true,
+              message: "Este campo es requerido",
+            },
+          ]}
+        >
+          <Input placeholder="Ingresa el celular del cliente" />
+        </Form.Item>
         <Form.Item {...tailLayoutForm}>
           <Button type="primary" htmlType="submit">
             Crear
