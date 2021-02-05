@@ -1,4 +1,5 @@
 import { Tag } from "antd";
+import moment from "moment-timezone";
 
 export const columnsGeneric = [
   {
@@ -43,8 +44,8 @@ export const columnsGeneric = [
     width: 100,
     render: (date_expiration) => {
       let currentDate = new Date();
-
-      let isValidity = currentDate > new Date(date_expiration);
+      let isValidity =
+        currentDate > new Date(date_expiration.replace("00:", "19:"));
       let validity = isValidity ? "Expirado" : "Vigente";
       let color = isValidity ? "tomato" : "green";
 
@@ -64,9 +65,9 @@ export const columnsGeneric = [
     width: 100,
     render: (value) => {
       let currentDate = new Date();
-      let dayExpiration = new Date(value);
+      let dayExpiration = new Date(value.replace("00:", "19:"));
       let differenceInTime = dayExpiration.getTime() - currentDate.getTime();
-      let differenceInDays = parseInt(differenceInTime / (1000 * 3600 * 24));
+      let differenceInDays = Math.round(differenceInTime / (1000 * 3600 * 24));
       let message =
         differenceInDays > 0
           ? `Expira en ${differenceInDays} días`
@@ -75,7 +76,7 @@ export const columnsGeneric = [
       let color =
         differenceInDays > 0 && differenceInDays <= 5
           ? "tomato"
-          : differenceInDays < 0
+          : differenceInDays <= 0
           ? "gray"
           : "skyblue";
 
@@ -92,13 +93,27 @@ export const columnsGeneric = [
     title: "Fecha de creación",
     dataIndex: "date_init",
     key: "date_init",
-    width: 120,
+    width: 100,
+    render: (date_init) => {
+      let parseDate = moment(date_init.replace("00:", "19:")).format(
+        "DD/MM/YYYY"
+      );
+
+      return <>{parseDate}</>;
+    },
   },
   {
     title: "Fecha de expiración",
     dataIndex: "date_expiration",
     key: "date_expiration",
-    width: 120,
+    width: 100,
+    render: (date_expiration) => {
+      let parseDate = moment(date_expiration.replace("00:", "19:")).format(
+        "DD/MM/YYYY"
+      );
+
+      return <>{parseDate}</>;
+    },
   },
   {
     title: "Turno",

@@ -14,9 +14,9 @@ export default function VouchersWrapper() {
     vouchers,
     countVouchers,
     getVouchers,
-    typeFilter,
-    getVouchersByStatusPaid,
-    statusPaid,
+    isFilter,
+    filters,
+    getVouchersByFilters,
   } = useContext(VoucherContext);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,12 +24,12 @@ export default function VouchersWrapper() {
   const onChange = async (page) => {
     setIsLoading(true);
     setCurrentPage(page);
-    if (typeFilter === "status_paid") {
-      await getVouchersByStatusPaid(statusPaid, page);
+
+    if (isFilter) {
+      await getVouchersByFilters(page, filters);
     } else {
       await getVouchers(page);
     }
-
     setIsLoading(false);
   };
 

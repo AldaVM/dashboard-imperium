@@ -30,7 +30,10 @@ export default function FormVoucher({ initialValues, isUpdated = false }) {
       setIsLoading(true);
       if (isUpdated) {
         console.log(values);
-        updateVoucher(initialValues?._id, values);
+        updateVoucher(initialValues?._id, {
+          ...values,
+          residue: values.rate - values.amount_paid,
+        });
       } else {
         await createVoucher(client._id, values);
       }

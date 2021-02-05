@@ -1,7 +1,5 @@
-import { Table, Typography } from "antd";
+import { Table } from "antd";
 import { TableContainer } from "./Styled";
-
-const { Title } = Typography;
 
 export default function TablePaids({ paids, columns, isPagination = true }) {
   return (

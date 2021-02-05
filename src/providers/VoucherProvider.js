@@ -6,8 +6,8 @@ import validateResponse from "../helpers/validationsReponse";
 export default function VoucherProvider({ children, initialValues }) {
   const [voucher, setVoucher] = useState(initialValues.voucher);
   const [vouchers, setVouchers] = useState(initialValues.vouchers);
-  const [typeFilter, setTypeFilter] = useState(null);
-  const [statusPaid, setStatusPaid] = useState(null);
+  const [isFilter, setIsFilter] = useState(false);
+  const [filters, setFilters] = useState(null);
   const [countVouchers, setCountVouchers] = useState(
     initialValues.countVouchers
   );
@@ -20,14 +20,12 @@ export default function VoucherProvider({ children, initialValues }) {
       validateResponse(response.status, "Listando Vouchers");
       setVouchers(response?.data?.records);
       setCountVouchers(response?.data?.count);
-      setTypeFilter(null);
-      setStatusPaid(null);
+      setIsFilter(false);
     } catch (error) {
       validateResponse(error.status, "Error to request");
       setVouchers([]);
       setCountVouchers(0);
-      setTypeFilter(null);
-      setStatusPaid(null);
+      setIsFilter(false);
     }
   }
 
@@ -67,14 +65,15 @@ export default function VoucherProvider({ children, initialValues }) {
     }
   }
 
-  async function getVouchersByStatusPaid(statusMessage, pageNum) {
+  async function getVouchersByFilters(pageNum, filters) {
     try {
       const { create } = serviceFetch(
         `voucher/find_property?pageSize=10&pageNum=${pageNum}`
       );
+
       const response = await create({
         items: {
-          status_paid: statusMessage,
+          ...filters,
         },
       });
 
@@ -84,14 +83,13 @@ export default function VoucherProvider({ children, initialValues }) {
       );
       setVouchers(response?.data);
       setCountVouchers(response?.count);
-      setTypeFilter("status_paid");
-      setStatusPaid(statusMessage);
+      setIsFilter(true);
+      setFilters(filters);
     } catch (error) {
       validateResponse(error.status, "Error to request");
       setVouchers([]);
       setCountVouchers(0);
-      setTypeFilter(null);
-      setStatusPaid(null);
+      setIsFilter(false);
     }
   }
 
@@ -101,13 +99,14 @@ export default function VoucherProvider({ children, initialValues }) {
         voucher,
         vouchers,
         countVouchers,
-        typeFilter,
-        statusPaid,
+        isFilter,
+        filters,
         getVouchers,
         createVoucher,
+        setFilters,
         updateVoucher,
         deleteVoucher,
-        getVouchersByStatusPaid,
+        getVouchersByFilters,
       }}
     >
       {children}
