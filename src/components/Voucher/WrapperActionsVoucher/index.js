@@ -1,12 +1,10 @@
-import { Button, Space, Typography, Spin } from "antd";
+import { Button, Space, Spin } from "antd";
 import { useState, useContext } from "react";
 import { VoucherContext } from "../../../context";
 import { DeleteFilled, DownloadOutlined } from "@ant-design/icons";
 import FormActionsVoucher from "../../Form/ActionVoucher";
 import { ContainerActionsVoucher } from "./Styled";
 import { ContainerSpin, WrapperSpin } from "../../Shared/SpinTable";
-
-const { Title } = Typography;
 
 export default function WrapperActionsVoucher() {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +24,7 @@ export default function WrapperActionsVoucher() {
   return (
     <div>
       <ContainerActionsVoucher>
-        <Title level={5}>Filtros:</Title>
+        <span>Filtros:</span>
         <Space>
           <FormActionsVoucher />
           <Button

@@ -4,5 +4,12 @@ export const ContainerActionsVoucher = styled("div")`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding-top: 2em;
+  align-items: center;
+  margin-top: 2em;
+  background: teal;
+
+  span,
+  form label {
+    font-size: 13px;
+  }
 `;
