@@ -6,7 +6,7 @@ export const ContainerActionsVoucher = styled("div")`
   justify-content: space-between;
   align-items: center;
   margin-top: 2em;
-  background: teal;
+
 
   span,
   form label {
