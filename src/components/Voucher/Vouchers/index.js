@@ -1,6 +1,8 @@
-import { useState, useContext, useEffect } from "react";
-import { Spin, Typography, Pagination } from "antd";
-import { VoucherContext } from "../../../context";
+import { useState, useContext } from "react";
+import { Spin, Typography, Pagination, Space, Button, Modal } from "antd";
+import FormVoucher from "../../Form/FormVoucher";
+import { EditOutlined, SelectOutlined } from "@ant-design/icons";
+import { VoucherContext, ClientContext } from "../../../context";
 import { ContainerSpin, WrapperSpin } from "../../Shared/SpinTable";
 import TablePaids from "../TableVoucher";
 import WrapperActionsVoucher from "../WrapperActionsVoucher";
@@ -18,8 +20,42 @@ export default function VouchersWrapper() {
     filters,
     getVouchersByFilters,
   } = useContext(VoucherContext);
-  const [isLoading, setIsLoading] = useState(false);
+  const { removeClientFromShift } = useContext(ClientContext);
+  const [isVisible, setIsVisible] = useState(false);
+  const [currentVoucher, setCurrentVoucher] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+
+  function updateVoucher(data) {
+    setCurrentVoucher(data);
+    showModal();
+  }
+
+  function showModal() {
+    setIsVisible(!isVisible);
+  }
+
+  function handleCancel() {
+    setIsVisible(false);
+  }
+
+  function handleOk() {
+    setIsVisible(false);
+  }
+
+  const deleteClientFromShift = async (voucher) => {
+    const { customer } = voucher;
+
+    if (customer?.timetable) {
+      await removeClientFromShift(customer);
+
+      if (isFilter) {
+        await getVouchersByFilters(currentPage, filters);
+      } else {
+        await getVouchers(currentPage);
+      }
+    }
+  };
 
   const onChange = async (page) => {
     setIsLoading(true);
@@ -54,6 +90,33 @@ export default function VouchersWrapper() {
       },
     },
     ...columnsGeneric,
+    {
+      title: "Actions",
+      key: "action",
+      width: 500,
+      render: (voucher) => (
+        <Space size="middle">
+          <Button
+            icon={<EditOutlined />}
+            onClick={() => {
+              updateVoucher(voucher);
+            }}
+          >
+            Modificar
+          </Button>
+          {voucher?.customer?.timetable.length > 0 && (
+            <Button
+              type="primary"
+              danger
+              onClick={() => deleteClientFromShift(voucher)}
+              icon={<SelectOutlined />}
+            >
+              Retirar de Turno
+            </Button>
+          )}
+        </Space>
+      ),
+    },
   ];
 
   return (
@@ -63,6 +126,15 @@ export default function VouchersWrapper() {
         Comprobantes registrados: {countVouchers ? countVouchers : 0}
       </Title>
       <WrapperActionsVoucher />
+      <Modal
+        title="Registar Comprobante"
+        visible={isVisible}
+        onCancel={handleCancel}
+        onOk={handleOk}
+        footer={null}
+      >
+        <FormVoucher initialValues={currentVoucher} isUpdated={true} />
+      </Modal>
       <TablePaids
         paids={addElementKey(vouchers)}
         columns={columns}

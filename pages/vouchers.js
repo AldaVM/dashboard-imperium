@@ -1,5 +1,5 @@
 import React from "react";
-import { VoucherProvider } from "../src/providers";
+import { VoucherProvider, ClientProvider } from "../src/providers";
 import { LayoutAdmin } from "../src/layouts";
 import { ProtectRoute } from "../src/hoc/privateRouter";
 import { addElementKey } from "../src/helpers/parseValues";
@@ -14,9 +14,16 @@ function Vouchers({ vouchers, countVouchers }) {
         countVouchers,
       }}
     >
-      <LayoutAdmin>
-        <VouchersWrapper />
-      </LayoutAdmin>
+      <ClientProvider
+        initialValues={{
+          clients: [],
+          countClients: 0,
+        }}
+      >
+        <LayoutAdmin>
+          <VouchersWrapper />
+        </LayoutAdmin>
+      </ClientProvider>
     </VoucherProvider>
   );
 }

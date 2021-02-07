@@ -15,7 +15,11 @@ export default function WrapperActionsVoucher() {
   async function downloadVoucher() {
     setIsLoading(true);
     await getVouchers(1);
-    setFilters({});
+    setFilters({
+      validity_date: null,
+      status_paid: null,
+      expire_date: null,
+    });
     setIsLoading(false);
   }
 
