@@ -1,15 +1,12 @@
 import { URL_API } from "../constants";
 import Cookies from "js-cookie";
+import download from "downloadjs";
 
 const serviceFetch = (url) => (service) => {
   const URL = `${url}/${service}`;
 
   return {
-    get: async (
-      config = {
-        token: "anyToken",
-      }
-    ) => {
+    get: async (config) => {
       try {
         const response = await fetch(URL, {
           method: "GET",
@@ -24,12 +21,28 @@ const serviceFetch = (url) => (service) => {
         };
       }
     },
-    create: async (
-      values,
-      config = {
-        token: "anyToken",
+    downloadFile: async (config, filename, typeFile) => {
+      try {
+        fetch(URL, {
+          method: "GET",
+          ...config,
+        })
+          .then((res) => res.blob())
+          .then((blob) => {
+            download(blob, filename, typeFile);
+          });
+
+        return {
+          status: 200,
+        };
+      } catch (error) {
+        return {
+          status: 500,
+          error,
+        };
       }
-    ) => {
+    },
+    create: async (values, config) => {
       try {
         const response = await fetch(URL, {
           method: "POST",
@@ -49,12 +62,7 @@ const serviceFetch = (url) => (service) => {
         };
       }
     },
-    update: async (
-      values,
-      config = {
-        token: "anyToken",
-      }
-    ) => {
+    update: async (values, config) => {
       try {
         const response = await fetch(URL, {
           method: "PUT",
@@ -74,11 +82,7 @@ const serviceFetch = (url) => (service) => {
         };
       }
     },
-    deleteData: async (
-      config = {
-        token: "anyToken",
-      }
-    ) => {
+    deleteData: async (config) => {
       try {
         const response = await fetch(URL, {
           method: "DELETE",
@@ -87,6 +91,7 @@ const serviceFetch = (url) => (service) => {
             token: Cookies.get("token"),
             Authorization: Cookies.get("token"),
           },
+          ...config,
         });
         return await response.json();
       } catch (error) {

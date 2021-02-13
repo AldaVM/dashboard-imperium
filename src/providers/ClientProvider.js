@@ -114,6 +114,7 @@ export default function ClientProvider({ children, initialValues }) {
         getClientByDNI,
         getClientByFilters,
         removeClientFromShift,
+        setClient
       }}
     >
       {children}

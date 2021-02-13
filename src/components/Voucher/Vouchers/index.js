@@ -1,7 +1,11 @@
 import { useState, useContext } from "react";
 import { Spin, Typography, Pagination, Space, Button, Modal } from "antd";
 import FormVoucher from "../../Form/FormVoucher";
-import { EditOutlined, SelectOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  SelectOutlined,
+  DownloadOutlined,
+} from "@ant-design/icons";
 import { VoucherContext, ClientContext } from "../../../context";
 import { ContainerSpin, WrapperSpin } from "../../Shared/SpinTable";
 import TablePaids from "../TableVoucher";
@@ -19,6 +23,7 @@ export default function VouchersWrapper() {
     isFilter,
     filters,
     getVouchersByFilters,
+    downloadPDFVoucher,
   } = useContext(VoucherContext);
   const { removeClientFromShift } = useContext(ClientContext);
   const [isVisible, setIsVisible] = useState(false);
@@ -114,6 +119,12 @@ export default function VouchersWrapper() {
               Retirar de Turno
             </Button>
           )}
+          <Button
+            icon={<DownloadOutlined />}
+            onClick={async () => await downloadPDFVoucher(voucher._id)}
+          >
+            PDF
+          </Button>
         </Space>
       ),
     },

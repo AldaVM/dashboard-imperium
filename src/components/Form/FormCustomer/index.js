@@ -7,7 +7,7 @@ import { layoutForm, tailLayoutForm } from "../complements";
 
 export default function FormCustomer() {
   const [isLoading, setIsLoading] = useState(false);
-  const { updateClients } = useContext(ClientContext);
+  const { updateClients, setClient } = useContext(ClientContext);
 
   const onFinish = async (values) => {
     try {
@@ -17,6 +17,7 @@ export default function FormCustomer() {
       setIsLoading(false);
 
       validateResponse(response.status, "client");
+      setClient(response.data);
       updateClients();
     } catch (error) {
       setIsLoading(false);

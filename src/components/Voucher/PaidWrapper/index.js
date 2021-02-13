@@ -1,21 +1,22 @@
-import { Typography, Tag, Space, Button, Spin } from "antd";
+import { useContext, useState } from "react";
+import { Typography, Tag, Space, Button, Spin, Modal } from "antd";
 import {
   MoneyCollectFilled,
   DeleteOutlined,
   EditOutlined,
+  PlusCircleOutlined,
 } from "@ant-design/icons";
-import { useContext, useState } from "react";
-import { VoucherProvider } from "../../../providers";
 import TablePaids from "../TableVoucher";
 import { columnsGeneric } from "../TableVoucher/columns";
 import FormVoucher from "../../Form/FormVoucher";
 import FormSearchCustomer from "../../Clients/SearchClient";
 import ClientCard from "../../Clients/ClientCard";
 import { ContainerSpin, WrapperSpin } from "../../Shared/SpinTable";
-import { ClientContext, VoucherContext } from "../../../context";
 import PaidCard from "../PaidCard";
-import Modal from "antd/lib/modal/Modal";
+import { FormCustomer } from "../../Form/";
 import { addElementKey } from "../../../helpers/parseValues";
+import { VoucherProvider } from "../../../providers";
+import { ClientContext, VoucherContext } from "../../../context";
 
 const { Title } = Typography;
 
@@ -25,6 +26,7 @@ export default function PaidWrapper() {
   const [currentVoucher, setCurrentVoucher] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isVisibleClient, setIsVisibleClient] = useState(false);
   const [isVisibleUpdate, setIsVisibleUpdate] = useState(false);
 
   function UpdateVoucher(data) {
@@ -68,7 +70,20 @@ export default function PaidWrapper() {
     },
   ];
 
+  function showModalClient() {
+    setIsVisibleClient(!isVisibleClient);
+  }
+
+  function handleCancelClient() {
+    setIsVisibleClient(false);
+  }
+
+  function handleOkClient() {
+    setIsVisibleClient(false);
+  }
+
   function showModal() {
+    setIsVisibleClient(false);
     setIsVisible(!isVisible);
   }
 
@@ -108,7 +123,15 @@ export default function PaidWrapper() {
             Registrar Voucher
           </Button>
         )}
+        <Button
+          type="primary"
+          onClick={showModalClient}
+          icon={<PlusCircleOutlined />}
+        >
+          Crear Cliente
+        </Button>
       </Space>
+
       <br />
       <Modal
         title="Registar Comprobante"
@@ -139,6 +162,16 @@ export default function PaidWrapper() {
         >
           <FormVoucher initialValues={currentVoucher} isUpdated={true} />
         </VoucherProvider>
+      </Modal>
+
+      <Modal
+        title="Nuevo Cliente"
+        visible={isVisibleClient}
+        onCancel={handleCancelClient}
+        onOk={handleOkClient}
+        footer={null}
+      >
+        <FormCustomer />
       </Modal>
       <Space direction="horizontal" align="start">
         {client.names !== "" && <ClientCard client={client} />}

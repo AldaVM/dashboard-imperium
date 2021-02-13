@@ -12,6 +12,30 @@ export default function VoucherProvider({ children, initialValues }) {
     initialValues.countVouchers
   );
 
+  async function downloadPDFVoucher(idVoucher) {
+    try {
+      const { downloadFile } = serviceFetch(
+        `voucher/generate-pdf/${idVoucher}`
+      );
+
+      const response = await downloadFile(
+        {
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/pdf",
+            "Content-Disposition": `${idVoucher}.pdf`,
+          },
+        },
+        `${idVoucher}.pdf`,
+        "application/pdf"
+      );
+
+      validateResponse(response.status, "Descargando comprobante");
+    } catch (error) {
+      validateResponse(error.status, "Error to request");
+    }
+  }
+
   async function getVouchers(pageNum) {
     try {
       const { get } = serviceFetch(`voucher?pageSize=10&pageNum=${pageNum}`);
@@ -107,6 +131,7 @@ export default function VoucherProvider({ children, initialValues }) {
         updateVoucher,
         deleteVoucher,
         getVouchersByFilters,
+        downloadPDFVoucher,
       }}
     >
       {children}
