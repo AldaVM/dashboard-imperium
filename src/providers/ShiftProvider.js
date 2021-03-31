@@ -8,6 +8,39 @@ export default function ShifProvider({ children, initialValues }) {
   const [countShifts, setCountShifts] = useState(initialValues.countShifts);
   const [shift, setShift] = useState(initialValues.shift);
 
+  async function getTimetableByFilters(filtersValues) {
+    try {
+      const servicePath =
+        filtersValues.intermediate_days === "all_days"
+          ? "timetable/shift_available/all_days"
+          : "timetable/shift_available";
+
+      const itemsToFilter =
+        filtersValues.intermediate_days === "all_days"
+          ? {
+              class_shift: filtersValues.class_shift,
+            }
+          : {
+              items: {
+                class_shift: filtersValues.class_shift,
+                intermediate_days: filtersValues.intermediate_days,
+              },
+            };
+
+      const { create } = serviceFetch(servicePath);
+      const response = await create(itemsToFilter);
+
+      validateResponse(response.status, "Listando turnos");
+      setShifts(response?.data);
+      console.log(response.data); 
+    } catch (error) {
+      console.log(error);
+      validateResponse(error.status, "Error to request");
+      setShifts([]);
+      setCountShifts(0);
+    }
+  }
+
   async function updateShifts() {
     try {
       const { get } = serviceFetch("timetable");
@@ -66,6 +99,7 @@ export default function ShifProvider({ children, initialValues }) {
         updateShift,
         shift,
         deleteShift,
+        getTimetableByFilters,
       }}
     >
       {children}

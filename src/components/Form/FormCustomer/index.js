@@ -11,14 +11,37 @@ export default function FormCustomer() {
 
   const onFinish = async (values) => {
     try {
-      setIsLoading(true);
-      const { create } = serviceFetch("customer");
-      const response = await create(values);
-      setIsLoading(false);
+      let surnames = "";
+      let names = "";
 
-      validateResponse(response.status, "client");
-      setClient(response.data);
-      updateClients();
+      if (/^([a-zñA-ZÑ0-9\s]){0,15}[a-zñA-ZÑ0-9]$/.test(values.surnames)) {
+        surnames = values.surnames;
+      }
+
+      if (/^([a-zñA-ZÑ0-9\s]){0,15}[a-zñA-ZÑ0-9]$/.test(values.names)) {
+        names = values.names;
+      }
+
+      if (surnames && names) {
+        setIsLoading(true);
+        const { create } = serviceFetch("customer");
+        const response = await create({
+          surnames,
+          names,
+          dni: values.dni,
+          phone_number: values.phone_number,
+        });
+        setIsLoading(false);
+
+        validateResponse(response.status, "client");
+        setClient(response.data);
+        updateClients();
+      } else {
+        validateResponse(
+          500,
+          "Validar los campos no pueden tener espacios al final ni al inicio"
+        );
+      }
     } catch (error) {
       setIsLoading(false);
       validateResponse(error.status, "client");

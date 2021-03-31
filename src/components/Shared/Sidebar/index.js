@@ -25,17 +25,22 @@ export default function SidebarComponent({ collapsed }) {
               <a>Turnos</a>
             </Link>
           </ItemListMenu>
-          <ItemListMenu key="2" icon={<UsergroupAddOutlined />}>
+          <ItemListMenu key="2" icon={<CalendarOutlined />}>
+            <Link href="/report-timetable">
+              <a>Report Turnos</a>
+            </Link>
+          </ItemListMenu>
+          <ItemListMenu key="3" icon={<UsergroupAddOutlined />}>
             <Link href="/client">
               <a>Clientes</a>
             </Link>
           </ItemListMenu>
-          <ItemListMenu key="3" icon={<UserOutlined />}>
+          <ItemListMenu key="4" icon={<UserOutlined />}>
             <Link href="/admin">
               <a>Perfil</a>
             </Link>
           </ItemListMenu>
-          <ItemListMenu key="4" icon={<MoneyCollectOutlined />}>
+          <ItemListMenu key="5" icon={<MoneyCollectOutlined />}>
             <Link href="/paid">
               <a>Registrar Voucher</a>
             </Link>
@@ -46,7 +51,7 @@ export default function SidebarComponent({ collapsed }) {
             </Link>
           </ItemListMenu>
           <ItemListMenu
-            key="5"
+            key="7"
             icon={<LogoutOutlined />}
             onClick={() => logout()}
           >
