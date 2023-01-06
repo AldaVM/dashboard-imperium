@@ -8,7 +8,7 @@ export default function ActionsClient() {
 
   async function downloadClients() {
     fetch(
-      "https://imperium-backend.herokuapp.com/v1/api/customer/download_xlsx",
+      "https://app-imperiumcross.herokuapp.com/v1/api/customer/download_xlsx",
       {
         mode: "cors",
         headers: {
