@@ -1,3 +1,3 @@
-const imperiumBaseUrl = "https://imperium-backend.herokuapp.com/v1/api";
+const imperiumBaseUrl = "https://app-imperiumcross.herokuapp.com/v1/api";
 
 export { imperiumBaseUrl };
