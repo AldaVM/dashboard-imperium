@@ -17,6 +17,7 @@ export default function CardClient({ client }) {
       <p>
         Nombre: {client.names} {client.surnames}
       </p>
+      <p>Sede: {client.company == 1 ? "Chosica" : "Ate"}</p>
       <p>DNI: {client.dni}</p>
       <p>Turno: {turn.toUpperCase()}</p>
       <p>Número de celular: {client.phone_number}</p>

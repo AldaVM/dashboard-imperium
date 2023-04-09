@@ -19,7 +19,6 @@ export default function FormTimetableReport({
   }, [initialValues]);
 
   const onFinish = (values) => {
-    console.log(values)
     getTimetableByFilters(values);
   };
 
@@ -28,7 +27,6 @@ export default function FormTimetableReport({
       form={form}
       layout="inline"
       name="form_actions_vouchers"
-      name="form_shift_report"
       style={{ margin: "2em 0" }}
       onFinish={onFinish}
       autoComplete="off"

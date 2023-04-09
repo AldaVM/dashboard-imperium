@@ -22,14 +22,12 @@ export default function FormVoucher({ initialValues, isUpdated = false }) {
     form.setFieldsValue({
       ...initialValues,
     });
-    console.log(initialValues);
   }, [initialValues]);
 
   const onFinish = async (values) => {
     try {
       setIsLoading(true);
       if (isUpdated) {
-        console.log(values);
         updateVoucher(initialValues?._id, {
           ...values,
           residue: values.rate - values.amount_paid,
@@ -124,6 +122,21 @@ export default function FormVoucher({ initialValues, isUpdated = false }) {
           <Select>
             <Select.Option value="INTERDIARIO">INTERDIARIO</Select.Option>
             <Select.Option value="DIARIO">DIARIO</Select.Option>
+          </Select>
+        </Form.Item>
+        <Form.Item
+          label="Sede"
+          name="company"
+          rules={[
+            {
+              required: true,
+              message: "Este campo es requerido",
+            },
+          ]}
+        >
+          <Select>
+            <Select.Option value="1">Chosica</Select.Option>
+            <Select.Option value="2">Ate</Select.Option>
           </Select>
         </Form.Item>
         <Form.Item

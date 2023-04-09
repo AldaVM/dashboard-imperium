@@ -2,13 +2,14 @@ import { Button, Modal, Space } from "antd";
 import { useState } from "react";
 import { PlusCircleOutlined, BarChartOutlined } from "@ant-design/icons";
 import { FormCustomer } from "../../Form/";
+import { URL_API } from "../../../constants";
 
 export default function ActionsClient() {
   const [isVisible, setIsVisible] = useState(false);
 
   async function downloadClients() {
     fetch(
-      "https://app-imperiumcross.herokuapp.com/v1/api/customer/download_xlsx",
+      `${URL_API}/customer/download_xlsx`,
       {
         mode: "cors",
         headers: {

@@ -1,4 +1,4 @@
-import { Form, Input, Button, Spin } from "antd";
+import { Form, Input, Button, Spin, Select } from "antd";
 import { useState, useContext } from "react";
 import { ClientContext } from "../../../context";
 import validateResponse from "../../../helpers/validationsReponse";
@@ -14,11 +14,11 @@ export default function FormCustomer() {
       let surnames = "";
       let names = "";
 
-      if (/^([a-zñA-ZÑ0-9\s]){0,15}[a-zñA-ZÑ0-9]$/.test(values.surnames)) {
+      if (/^[A-Za-z\s]*$/.test(values.surnames)) {
         surnames = values.surnames;
       }
 
-      if (/^([a-zñA-ZÑ0-9\s]){0,15}[a-zñA-ZÑ0-9]$/.test(values.names)) {
+      if (/^[A-Za-z\s]*$/.test(values.names)) {
         names = values.names;
       }
 
@@ -30,9 +30,9 @@ export default function FormCustomer() {
           names,
           dni: values.dni,
           phone_number: values.phone_number,
+          company: values.company === "Chosica" ? 1 : 2,
         });
         setIsLoading(false);
-
         validateResponse(response.status, "client");
         setClient(response.data);
         updateClients();
@@ -43,6 +43,7 @@ export default function FormCustomer() {
         );
       }
     } catch (error) {
+      console.log(error);
       setIsLoading(false);
       validateResponse(error.status, "client");
     }
@@ -59,6 +60,12 @@ export default function FormCustomer() {
         onFinish={onFinish}
         autoComplete="off"
       >
+        <Form.Item label="Sede" name="company">
+          <Select defaultActiveFirstOption={true}>
+            <Select.Option value="Chosica">Chosica</Select.Option>
+            <Select.Option value="Ate">Ate</Select.Option>
+          </Select>
+        </Form.Item>
         <Form.Item
           label="Nombres"
           name="names"

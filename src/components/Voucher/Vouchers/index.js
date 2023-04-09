@@ -138,7 +138,7 @@ export default function VouchersWrapper() {
       </Title>
       <WrapperActionsVoucher />
       <Modal
-        title="Registar Comprobante"
+        title="Modificar Comprobante"
         visible={isVisible}
         onCancel={handleCancel}
         onOk={handleOk}

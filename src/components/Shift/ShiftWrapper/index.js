@@ -24,7 +24,6 @@ export default function ShiftWrapper() {
   }
 
   function showModal() {
-    console.log(shift);
     setIsVisible(!isVisible);
   }
 

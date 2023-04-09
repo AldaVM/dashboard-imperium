@@ -8,4 +8,4 @@ export const DEFAULT_CLIENT_404 = {
   status_paid: "No encontrado",
   timetable: [],
 };
-// export const URL_API = "http://localhost:8000/v1/api";
+//export const URL_API = "http://localhost:8002/v1/api";

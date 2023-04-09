@@ -11,7 +11,7 @@ export default function FormLoginComponent() {
   const onFinish = async (values) => {
     const { email, password } = values;
     const resp = await login(email, password);
-    console.log(resp);
+    
     resp ? router.push("/admin") : console.log(false);
   };
   return (

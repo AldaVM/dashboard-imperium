@@ -18,6 +18,16 @@ function validateVigence(validity_date) {
   return {};
 }
 
+function validateCompany(company) {
+  if (company) {
+    return { company: company };
+  }
+
+  return {};
+}
+
+
+
 function validateStatusPaid(status_paid) {
   if (status_paid) {
     return { status_paid: status_paid };
@@ -46,6 +56,9 @@ function validateFilters(filters) {
 
   for (const key in filters) {
     if (filters[key]) {
+      if (key == "company") {
+        cleanFilters = Object.assign({}, validateCompany(filters[key]));
+      }
       if (key == "validity_date") {
         cleanFilters = Object.assign({}, validateVigence(filters[key]));
       }
@@ -78,18 +91,18 @@ function FormActionsVoucher() {
     form.setFieldsValue({
       ...filters,
     });
-    console.log(filters);
   }, [filters]);
 
   const onFinish = async (values) => {
     setIsLoading(true);
 
-    const { validity_date, status_paid, expire_date } = values;
+    const { validity_date, status_paid, expire_date, company } = values;
 
     let newFilters = validateFilters({
       validity_date: validity_date ? validity_date : null,
       status_paid: status_paid ? status_paid : null,
       expire_date: expire_date ? expire_date : null,
+      company: company ? company : null,
     });
 
     if (Object.keys(newFilters).length > 0) {
@@ -114,6 +127,12 @@ function FormActionsVoucher() {
           <Select style={{ width: 130 }}>
             <Select.Option value="validity">Vigente</Select.Option>
             <Select.Option value="expire">Expirado</Select.Option>
+          </Select>
+        </Form.Item>
+        <Form.Item label="Sede:" name="company">
+          <Select style={{ width: 130 }}>
+            <Select.Option value="1">Chosica</Select.Option>
+            <Select.Option value="2">Ate</Select.Option>
           </Select>
         </Form.Item>
         <Form.Item label="Estado del Pago:" name="status_paid">

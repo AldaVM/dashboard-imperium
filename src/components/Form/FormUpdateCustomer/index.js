@@ -52,6 +52,12 @@ export default function FormUpdateCustomer({ initialValues, updatedValues }) {
         onFinish={onFinish}
         autoComplete="off"
       >
+        <Form.Item label="Sede" name="company">
+          <Select>
+            <Select.Option value="1">Chosica</Select.Option>
+            <Select.Option value="2">Ate</Select.Option>
+          </Select>
+        </Form.Item>
         <Form.Item
           label="Nombres"
           name="names"

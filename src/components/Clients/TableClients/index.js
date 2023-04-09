@@ -140,6 +140,14 @@ export default function TableClients({ clients }) {
       width: 180,
     },
     {
+      title: "Sede",
+      dataIndex: "company",
+      key: "company",
+      render: (company) =>
+        company == 1 ? <span>Chosica</span> : <span>Ate</span>,
+      width: 180,
+    },
+    {
       title: "DNI",
       dataIndex: "dni",
       key: "dni",
